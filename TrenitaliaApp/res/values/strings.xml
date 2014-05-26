@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="content_description">Immagine</string>
+    
     <!-- View dettaglio -->
     <string name="app_name">TrenitaliaApp</string>
     <string name="title_cliente_detail">Cliente Detail</string>
@@ -10,6 +12,7 @@
     <string name="text_view_foto_viso">Foto viso:</string>
     <string name="text_view_foto_documento">Foto documento:</string>
     <string name="button_foto">Seleziona foto</string>
+    <string name="button_foto_modifica">Modifica</string>
 
     <!-- Lista elementi -->
     <string name="button_nuovo_text">Nuovo</string>

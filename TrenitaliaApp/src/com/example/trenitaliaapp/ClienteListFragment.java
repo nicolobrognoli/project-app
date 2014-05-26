@@ -94,7 +94,7 @@ public class ClienteListFragment extends ListFragment
             @Override
             public void onClick(View v)
             {
-                
+                mCallbacks.newItemInsert();
             }
         });
         
