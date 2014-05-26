@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- View dettaglio -->
+    <string name="app_name">TrenitaliaApp</string>
+    <string name="title_cliente_detail">Cliente Detail</string>
+    <string name="text_view_nome">Nome:</string>
+    <string name="text_view_cognome">Cognome:</string>
+    <string name="text_view_numero">Numero:</string>
+    <string name="text_view_foto_viso">Foto viso:</string>
+    <string name="text_view_foto_documento">Foto documento:</string>
+    <string name="button_foto">Seleziona foto</string>
+
+    <!-- Lista elementi -->
+    <string name="button_nuovo_text">Nuovo</string>
+    <string name="button_salva">Salva</string>
+
+</resources>
