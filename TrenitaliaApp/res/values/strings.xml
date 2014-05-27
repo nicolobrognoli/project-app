@@ -2,7 +2,7 @@
 <resources>
 
     <string name="content_description">Immagine</string>
-    
+
     <!-- View dettaglio -->
     <string name="app_name">TrenitaliaApp</string>
     <string name="title_cliente_detail">Cliente Detail</string>
@@ -17,5 +17,12 @@
     <!-- Lista elementi -->
     <string name="button_nuovo_text">Nuovo</string>
     <string name="button_salva">Salva</string>
+
+    <!-- Dialog scelta -->
+    <string name="dialog_title">Opzioni acquisizione</string>
+    <string name="dialog_text">Selezionare origine immagine:</string>
+    <string name="button_galleria">Galleria</string>
+    <string name="button_camera">Fotocamera</string>
+    
 
 </resources>
