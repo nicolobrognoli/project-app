@@ -210,8 +210,7 @@ public class ClienteDetailFragment extends Fragment
                         Toast.makeText(getActivity(), "Errore acquisizione immagine.", Toast.LENGTH_SHORT).show();
                         break;
                 }
-            }
-            
+            }            
         }
     }
     
@@ -250,7 +249,7 @@ public class ClienteDetailFragment extends Fragment
         {
             BitmapDrawable bmpDrawable = null;
             ImageView imageView = null;
-            String root = Environment.getExternalStorageDirectory().toString() + SDCard.APPFOLDER;
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + SDCard.APPFOLDER + "/";
             String imagePathName = "";
             
             if (imageType == FOTO_VISO_REQUEST)
