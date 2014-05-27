@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.trenitaliaapp.dummy.DummyContent;
+import com.example.trenitaliaapp.utils.SDCard;
+import com.example.trenitaliaapp.utils.User;
 import com.example.trenitaliaapp.utils.Utils;
 
 /**
@@ -89,7 +93,7 @@ public class ClienteDetailFragment extends Fragment
             // ((TextView) rootView.findViewById(R.id.cliente_detail)).setText(mItem.content);
         }
         
-        Utils.resetTempFolder();
+        SDCard.resetTempFolder();
         
         salvaButton_ = ((Button) rootView.findViewById(R.id.button_salva));
         salvaButton_.setOnClickListener(new OnClickListener() {
@@ -112,7 +116,21 @@ public class ClienteDetailFragment extends Fragment
                     String numero = numeroText.getText().toString();
                     Log.v("Input:", "Numero:" + numero);
                     
-                    // TODO: azioni bottone salva
+                    boolean noEmpty = chechEmptyFields();
+                    
+                    if (noEmpty)
+                    {
+                        User user = new User();
+                        user.setNome(nome);
+                        user.setCognome(cognome);
+                        user.setNumero(numero);
+                        
+                        SimpleDateFormat formatter = new SimpleDateFormat(Utils.DATE_FORMAT);
+                        user.setCreation(formatter.format(new Date()));
+                        
+                        SDCard.writeToSDFile(user);
+                        SDCard.moveTempImages(numero);
+                    }
                 }
             }
         });
@@ -123,10 +141,10 @@ public class ClienteDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                String root = Environment.getExternalStorageDirectory().toString() + Utils.APP_PATH;
+                String root = Environment.getExternalStorageDirectory().toString() + SDCard.APPFOLDER;
                 
                 // Creating folders for Image
-                String imageFolderPath = root + Utils.TEMP_IMG_PATH;
+                String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
                 imagesFolder.mkdirs();
                 
@@ -140,10 +158,10 @@ public class ClienteDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                String root = Environment.getExternalStorageDirectory().toString() + Utils.APP_PATH;
+                String root = Environment.getExternalStorageDirectory().toString() + SDCard.APPFOLDER;
                 
                 // Creating folders for Image
-                String imageFolderPath = root + Utils.TEMP_IMG_PATH;
+                String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
                 imagesFolder.mkdirs();
                 
@@ -203,25 +221,26 @@ public class ClienteDetailFragment extends Fragment
         {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             ImageView imageView = null;
-            String root = Environment.getExternalStorageDirectory().toString() + Utils.APP_PATH;
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + SDCard.APPFOLDER + "/";
             String imagePathName = "";
             
             if (imageType == FOTO_VISO_REQUEST)
             {
-                imagePathName = root + Utils.TEMP_IMG_PATH + Utils.TEMP_IMG_VISO;
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
                 fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             else if (imageType == FOTO_DOCUMENTO_REQUEST)
             {
-                imagePathName = root + Utils.TEMP_IMG_PATH + Utils.TEMP_IMG_DOCUMENTO;
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
                 fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             imageView.setImageBitmap(bitmap);
             imageView.setVisibility(View.VISIBLE);
             
-            saveTempImage(imagePathName, bitmap);
+            String tempPath = root + SDCard.TEMP_IMG_PATH;
+            saveTempImage(tempPath, imagePathName, bitmap);
         }
     }
     
@@ -231,41 +250,46 @@ public class ClienteDetailFragment extends Fragment
         {
             BitmapDrawable bmpDrawable = null;
             ImageView imageView = null;
-            String root = Environment.getExternalStorageDirectory().toString() + Utils.APP_PATH;
+            String root = Environment.getExternalStorageDirectory().toString() + SDCard.APPFOLDER;
             String imagePathName = "";
             
             if (imageType == FOTO_VISO_REQUEST)
             {
-                imagePathName = root + Utils.TEMP_IMG_PATH + Utils.TEMP_IMG_VISO;
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
                 fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             else if (imageType == FOTO_DOCUMENTO_REQUEST)
             {
-                imagePathName = root + Utils.TEMP_IMG_PATH + Utils.TEMP_IMG_DOCUMENTO;
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
                 fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             
-            Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
-            if (cursor != null)
+            if (data != null && data.getData() != null)
             {
-                cursor.moveToFirst();
-                
-                int idx = cursor.getColumnIndex(ImageColumns.DATA);
-                String fileSrc = cursor.getString(idx);
-                Bitmap bitmap = BitmapFactory.decodeFile(fileSrc);
-                
-                imageView.setImageBitmap(bitmap);
-                imageView.setVisibility(View.VISIBLE);
-                saveTempImage(imagePathName, bitmap);
-            }
-            else
-            {
-                bmpDrawable = new BitmapDrawable(getResources(), data.getData().getPath());
-                imageView.setImageDrawable(bmpDrawable);
-                imageView.setVisibility(View.VISIBLE);
-                saveTempImage(imagePathName, bmpDrawable.getBitmap());
+                Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+                String tempPath = root + SDCard.TEMP_IMG_PATH;
+                if (cursor != null)
+                {
+                    cursor.moveToFirst();
+                    
+                    int idx = cursor.getColumnIndex(ImageColumns.DATA);
+                    String fileSrc = cursor.getString(idx);
+                    Bitmap bitmap = BitmapFactory.decodeFile(fileSrc);
+                    
+                    imageView.setImageBitmap(bitmap);
+                    imageView.setVisibility(View.VISIBLE);
+                    
+                    saveTempImage(tempPath, imagePathName, bitmap);
+                }
+                else
+                {
+                    bmpDrawable = new BitmapDrawable(getResources(), data.getData().getPath());
+                    imageView.setImageDrawable(bmpDrawable);
+                    imageView.setVisibility(View.VISIBLE);
+                    saveTempImage(tempPath, imagePathName, bmpDrawable.getBitmap());
+                }
             }
         }
         else
@@ -274,10 +298,16 @@ public class ClienteDetailFragment extends Fragment
         }
     }
     
-    private void saveTempImage(String imagePathName, Bitmap bitmap)
+    private void saveTempImage(String tempPath, String imagePathName, Bitmap bitmap)
     {
         try
         {
+            File dir = new File(tempPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+            
             FileOutputStream out = new FileOutputStream(imagePathName);
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.close();
@@ -300,8 +330,8 @@ public class ClienteDetailFragment extends Fragment
     private void startDialog(final int requestCode)
     {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
-        myAlertDialog.setTitle("Upload Pictures Option");
-        myAlertDialog.setMessage("How do you want to set your picture?");
+        myAlertDialog.setTitle(getResources().getString(R.string.dialog_title));
+        myAlertDialog.setMessage(getResources().getString(R.string.dialog_text));
         
         String positiveButtonTitle = getResources().getString(R.string.button_galleria);
         myAlertDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
@@ -324,5 +354,10 @@ public class ClienteDetailFragment extends Fragment
             }
         });
         myAlertDialog.show();
+    }
+    
+    private boolean chechEmptyFields()
+    {
+        return true;
     }
 }
