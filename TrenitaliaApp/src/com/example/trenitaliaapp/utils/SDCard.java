@@ -121,7 +121,18 @@ public class SDCard
         File root = android.os.Environment.getExternalStorageDirectory();
         File dir = new File(root.getAbsolutePath() + "/" + APPFOLDER);
         
+        if (!dir.exists())
+        {
+            Log.v(TAG, "APP dir doesn't exist!");
+            return null;
+        }
+        
         File[] list = dir.listFiles();
+        if (list.length == 0)
+        {
+            Log.v(TAG, "APP dir is empty!");
+            return null;
+        }
         
         Vector<User> users = new Vector<User>();
         
@@ -169,7 +180,7 @@ public class SDCard
         
     }
     
-    public String getValue(Element item, String name)
+    private String getValue(Element item, String name)
     {
         NodeList nodes = item.getElementsByTagName(name);
         return this.getTextNodeValue(nodes.item(0));
@@ -194,6 +205,16 @@ public class SDCard
             }
         }
         return "";
+    }
+    
+    public boolean deleteUser(User user)
+    {
+        File root = android.os.Environment.getExternalStorageDirectory();
+        
+        File oldDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero());
+        File backupDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/." + user.getNumero());
+        boolean success = oldDir.renameTo(backupDir);
+        return success;
     }
     
     public static void moveTempImages(String number)
