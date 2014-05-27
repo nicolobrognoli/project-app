@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+
+    <!-- Colori Trenitalia -->
+    <color name="ti_red">#DC002E</color>
+    <color name="ti_deep_green">#006263</color>
+
+</resources>

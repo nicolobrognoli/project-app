@@ -1,38 +1,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal"
-    android:orientation="horizontal"
-    android:showDividers="middle"
-    tools:context=".ClienteListActivity" >
+    android:layout_height="wrap_content" 
+    android:orientation="vertical"    >
 
-    <!--
-    This layout is a two-pane layout for the Clienti
-    master/detail flow. See res/values-large/refs.xml and
-    res/values-sw600dp/refs.xml for an example of layout aliases
-    that replace the single-pane version of the layout with
-    this two-pane version.
+    <ImageView
+        android:layout_width="@dimen/img_width"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/logo_trenitalia" 
+        android:layout_gravity="center_horizontal"/>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/ti_red">
+        
+    </LinearLayout>
 
-    For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    -->
-
-    <fragment
-        android:id="@+id/cliente_list"
-        android:name="com.example.trenitaliaapp.ClienteListFragment"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:layout="@layout/item_list_layout" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        tools:context=".ClienteListActivity" >
 
-    <FrameLayout
-        android:id="@+id/cliente_detail_container"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3" />
+        <fragment
+            android:id="@+id/cliente_list"
+            android:name="com.example.trenitaliaapp.ClienteListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:layout="@layout/item_list_layout" />
+
+        <FrameLayout
+            android:id="@+id/cliente_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
+    </LinearLayout>
 
 </LinearLayout>

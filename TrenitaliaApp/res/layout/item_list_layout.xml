@@ -9,19 +9,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <Button
+        <ImageButton
             android:id="@+id/button_nuovo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/button_nuovo_text" />
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/greenborder"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/plus_icon_green" />
 
         <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:divider="@color/ti_deep_green"
+            android:dividerHeight="@dimen/list_separator_height"
             android:drawSelectorOnTop="false" />
     </LinearLayout>
 
 </FrameLayout>
+<!-- android:background="@drawable/redborder" -->
 

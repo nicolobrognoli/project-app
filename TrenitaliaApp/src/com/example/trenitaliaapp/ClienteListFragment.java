@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.trenitaliaapp.dummy.DummyContent;
@@ -88,7 +89,7 @@ public class ClienteListFragment extends ListFragment
     {
         View rootView = inflater.inflate(R.layout.item_list_layout, container, false);
         
-        Button nuovoButton = ((Button) rootView.findViewById(R.id.button_nuovo));
+        ImageButton nuovoButton = ((ImageButton) rootView.findViewById(R.id.button_nuovo));
         nuovoButton.setOnClickListener(new OnClickListener() {
             
             @Override
