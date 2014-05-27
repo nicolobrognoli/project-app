@@ -6,10 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +43,8 @@ public class ClienteDetailFragment extends Fragment
     private static final int FOTO_VISO_REQUEST = 2;
     
     private static final int FOTO_DOCUMENTO_REQUEST = 3;
+    
+    private static final int GALLERY = 100;
     
     private Button salvaButton_;
     
@@ -122,8 +130,7 @@ public class ClienteDetailFragment extends Fragment
                 File imagesFolder = new File(imageFolderPath);
                 imagesFolder.mkdirs();
                 
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, FOTO_VISO_REQUEST);
+                startDialog(FOTO_VISO_REQUEST);
             }
         });
         
@@ -140,8 +147,7 @@ public class ClienteDetailFragment extends Fragment
                 File imagesFolder = new File(imageFolderPath);
                 imagesFolder.mkdirs();
                 
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, FOTO_DOCUMENTO_REQUEST);
+                startDialog(FOTO_DOCUMENTO_REQUEST);
             }
         });
         
@@ -152,20 +158,42 @@ public class ClienteDetailFragment extends Fragment
     {
         if (resultCode == Activity.RESULT_OK)
         {
-            
-            switch (requestCode)
+            int code = requestCode - GALLERY;
+            if (code > 0)
             {
-                case FOTO_VISO_REQUEST:
-                    this.saveCapturedImage(data, FOTO_VISO_REQUEST);
-                    break;
-                case FOTO_DOCUMENTO_REQUEST:
-                    this.saveCapturedImage(data, FOTO_DOCUMENTO_REQUEST);
-                    break;
-                
-                default:
-                    Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
-                    break;
+                // Acquisizione da galleria
+                switch (code)
+                {
+                    case FOTO_VISO_REQUEST:
+                        this.importImage(data, FOTO_VISO_REQUEST);
+                        break;
+                    case FOTO_DOCUMENTO_REQUEST:
+                        this.importImage(data, FOTO_DOCUMENTO_REQUEST);
+                        break;
+                    
+                    default:
+                        Toast.makeText(getActivity(), "Errore acquisizione immagine.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
             }
+            else
+            {
+                // Acquisizione da fotocamera
+                switch (requestCode)
+                {
+                    case FOTO_VISO_REQUEST:
+                        this.saveCapturedImage(data, FOTO_VISO_REQUEST);
+                        break;
+                    case FOTO_DOCUMENTO_REQUEST:
+                        this.saveCapturedImage(data, FOTO_DOCUMENTO_REQUEST);
+                        break;
+                    
+                    default:
+                        Toast.makeText(getActivity(), "Errore acquisizione immagine.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+            
         }
     }
     
@@ -193,25 +221,108 @@ public class ClienteDetailFragment extends Fragment
             imageView.setImageBitmap(bitmap);
             imageView.setVisibility(View.VISIBLE);
             
-            try
+            saveTempImage(imagePathName, bitmap);
+        }
+    }
+    
+    private void importImage(Intent data, int imageType)
+    {
+        if (data != null)
+        {
+            BitmapDrawable bmpDrawable = null;
+            ImageView imageView = null;
+            String root = Environment.getExternalStorageDirectory().toString() + Utils.APP_PATH;
+            String imagePathName = "";
+            
+            if (imageType == FOTO_VISO_REQUEST)
             {
-                FileOutputStream out = new FileOutputStream(imagePathName);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-                out.close();
-                Log.v("Salvataggio immagine:", "Saved: " + imagePathName);
+                imagePathName = root + Utils.TEMP_IMG_PATH + Utils.TEMP_IMG_VISO;
+                imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
+                fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
-            catch (FileNotFoundException e)
+            else if (imageType == FOTO_DOCUMENTO_REQUEST)
             {
-                Log.e("Errore:", e.toString());
+                imagePathName = root + Utils.TEMP_IMG_PATH + Utils.TEMP_IMG_DOCUMENTO;
+                imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
+                fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
-            catch (IOException e)
+            
+            Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+            if (cursor != null)
             {
-                Log.e("Errore:", e.toString());
+                cursor.moveToFirst();
+                
+                int idx = cursor.getColumnIndex(ImageColumns.DATA);
+                String fileSrc = cursor.getString(idx);
+                Bitmap bitmap = BitmapFactory.decodeFile(fileSrc);
+                
+                imageView.setImageBitmap(bitmap);
+                imageView.setVisibility(View.VISIBLE);
+                saveTempImage(imagePathName, bitmap);
             }
-            catch (Exception e)
+            else
             {
-                Log.e("Errore:", e.toString());
+                bmpDrawable = new BitmapDrawable(getResources(), data.getData().getPath());
+                imageView.setImageDrawable(bmpDrawable);
+                imageView.setVisibility(View.VISIBLE);
+                saveTempImage(imagePathName, bmpDrawable.getBitmap());
             }
         }
+        else
+        {
+            Toast.makeText(getActivity().getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    private void saveTempImage(String imagePathName, Bitmap bitmap)
+    {
+        try
+        {
+            FileOutputStream out = new FileOutputStream(imagePathName);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            Log.v("Salvataggio immagine:", "Saved: " + imagePathName);
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.e("Errore:", e.toString());
+        }
+        catch (IOException e)
+        {
+            Log.e("Errore:", e.toString());
+        }
+        catch (Exception e)
+        {
+            Log.e("Errore:", e.toString());
+        }
+    }
+    
+    private void startDialog(final int requestCode)
+    {
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
+        myAlertDialog.setTitle("Upload Pictures Option");
+        myAlertDialog.setMessage("How do you want to set your picture?");
+        
+        String positiveButtonTitle = getResources().getString(R.string.button_galleria);
+        myAlertDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1)
+            {
+                Intent pictureActionIntent = new Intent(Intent.ACTION_GET_CONTENT, null);
+                pictureActionIntent.setType("image/*");
+                pictureActionIntent.putExtra("return-data", true);
+                startActivityForResult(pictureActionIntent, requestCode + GALLERY);
+            }
+        });
+        
+        String negativeButtonTitle = getResources().getString(R.string.button_camera);
+        myAlertDialog.setNegativeButton(negativeButtonTitle, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1)
+            {
+                Intent pictureActionIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(pictureActionIntent, requestCode);
+                
+            }
+        });
+        myAlertDialog.show();
     }
 }
