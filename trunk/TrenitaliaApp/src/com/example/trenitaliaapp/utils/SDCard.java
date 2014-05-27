@@ -141,9 +141,12 @@ public class SDCard
             
             File userFile = new File(f.getAbsoluteFile() + "/" + USERXML);
             Log.d(TAG, "reading file " + userFile.getAbsolutePath());
-            User user = user = readSingleXMLFile(userFile);
-            Log.d(TAG, "ho letto l'utente numero: " + user.getNumero());
-            users.add(user);
+            User user = readSingleXMLFile(userFile);
+            if (user != null)
+            {
+                Log.d(TAG, "ho letto l'utente numero: " + user.getNumero());
+                users.add(user); 
+            }            
         }
         
         return users;
