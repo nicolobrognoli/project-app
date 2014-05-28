@@ -1,21 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" 
-    android:orientation="vertical"    >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
     <ImageView
         android:layout_width="@dimen/img_width"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/logo_trenitalia" 
-        android:layout_gravity="center_horizontal"/>
-    
-    <LinearLayout 
+        android:src="@drawable/logo_trenitalia" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/separator_height"
-        android:background="@color/ti_red">
-        
+        android:background="@color/ti_red" >
     </LinearLayout>
 
     <LinearLayout
@@ -26,16 +24,13 @@
         android:baselineAligned="false"
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="horizontal"
-        android:showDividers="middle"
-        tools:context=".ClienteListActivity" >
+        android:showDividers="middle" >
 
-        <fragment
+        <FrameLayout
             android:id="@+id/cliente_list"
-            android:name="com.example.trenitaliaapp.ClienteListFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:layout="@layout/item_list_layout" />
+            android:layout_weight="1" />
 
         <FrameLayout
             android:id="@+id/cliente_detail_container"

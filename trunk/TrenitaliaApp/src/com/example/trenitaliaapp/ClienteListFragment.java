@@ -33,7 +33,7 @@ public class ClienteListFragment extends Fragment
     /**
      * The fragment's current callback object, which is notified of list item clicks.
      */
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private Callbacks mCallbacks = callbacks;
     
     /**
      * The current activated item position. Only used on tablets.
@@ -56,10 +56,7 @@ public class ClienteListFragment extends Fragment
         public void newItemInsert();
     }
     
-    /**
-     * A dummy implementation of the {@link Callbacks} interface that does nothing. Used only when this fragment is not attached to an activity.
-     */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
+    private static Callbacks callbacks = new Callbacks() {
         @Override
         public void onItemSelected(int id)
         {
@@ -71,9 +68,6 @@ public class ClienteListFragment extends Fragment
         }
     };
     
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-     */
     public ClienteListFragment()
     {
     }
@@ -89,13 +83,13 @@ public class ClienteListFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.item_list_layout, container, false);
         
-        ListView list = (ListView)rootView.findViewById(R.id.clienti_list);
+        ListView list = (ListView) rootView.findViewById(R.id.clienti_list);
         SDCard sdCardUtils = new SDCard();
         Vector<User> userList = sdCardUtils.readAllUsers();
         ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList);
         list.setAdapter(clientAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+            
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
             {
@@ -148,9 +142,8 @@ public class ClienteListFragment extends Fragment
         super.onDetach();
         
         // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
+        mCallbacks = callbacks;
     }
-
     
     @Override
     public void onSaveInstanceState(Bundle outState)
@@ -170,20 +163,20 @@ public class ClienteListFragment extends Fragment
     {
         // When setting CHOICE_MODE_SINGLE, ListView will automatically
         // give items the 'activated' state when touched.
-//        getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
+        // getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
     }
     
     private void setActivatedPosition(int position)
     {
-//        if (position == ListView.INVALID_POSITION)
-//        {
-//            getListView().setItemChecked(mActivatedPosition, false);
-//        }
-//        else
-//        {
-//            getListView().setItemChecked(position, true);
-//        }
-//        
-//        mActivatedPosition = position;
+        // if (position == ListView.INVALID_POSITION)
+        // {
+        // getListView().setItemChecked(mActivatedPosition, false);
+        // }
+        // else
+        // {
+        // getListView().setItemChecked(position, true);
+        // }
+        //
+        // mActivatedPosition = position;
     }
 }

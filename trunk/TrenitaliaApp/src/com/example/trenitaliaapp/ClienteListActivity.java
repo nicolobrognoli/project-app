@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentActivity;
  * <p>
  * This activity also implements the required {@link ClienteListFragment.Callbacks} interface to listen for item selections.
  */
-public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks
+public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks, ClienteDetailFragment.DettaglioCallbacks
 {
     
     /**
@@ -22,22 +22,15 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cliente_list);
+        setContentView(R.layout.activity_cliente_twopane);      
         
-        if (findViewById(R.id.cliente_detail_container) != null)
-        {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-            
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            // ((ClienteListFragment) getSupportFragmentManager().findFragmentById(R.id.cliente_list)).setActivateOnItemClick(true);
-        }
+        ClienteListFragment fragmentSx = new ClienteListFragment();
+        getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
         
-        // TODO: If exposing deep links into your app, handle intents here.
+        ClienteDetailFragment fragmentDx = new ClienteDetailFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragmentDx).commit();
+        
+        mTwoPane = true;
     }
     
     /**
@@ -62,4 +55,12 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
         ClienteDetailFragment fragment = new ClienteDetailFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragment).commit();
     }
+    
+    @Override
+    public void onStateChanged()
+    {
+        ClienteListFragment fragmentSx = new ClienteListFragment();
+        getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
+    }
+
 }
