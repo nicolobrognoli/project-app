@@ -32,14 +32,8 @@ import com.example.trenitaliaapp.utils.SDCard;
 import com.example.trenitaliaapp.utils.User;
 import com.example.trenitaliaapp.utils.Utils;
 
-/**
- * A fragment representing a single Cliente detail screen. This fragment is either contained in a {@link ClienteListActivity} in two-pane mode (on tablets) or a {@link ClienteDetailActivity} on handsets.
- */
 public class ClienteDetailFragment extends Fragment
 {
-    /**
-     * The fragment argument representing the item ID that this fragment represents.
-     */
     public static final String ARG_ITEM_ID = "item_id";
     
     private static final int FOTO_VISO_REQUEST = 2;
@@ -49,6 +43,8 @@ public class ClienteDetailFragment extends Fragment
     private static final int GALLERY = 100;
     
     private Button salvaButton_;
+    
+    private Button modificaButton_;
     
     private Button fotoVisoButton_;
     
@@ -65,6 +61,8 @@ public class ClienteDetailFragment extends Fragment
     private boolean fotoVisoAcquisita_ = false;
     
     private boolean fotoDocumentoAcquisita_ = false;
+    
+    private boolean isInputEnabled_ = true;
     
     private DettaglioCallbacks mDettaglioCallbacks = dettaglioCallbacks;
     
@@ -110,19 +108,76 @@ public class ClienteDetailFragment extends Fragment
         numeroText_ = ((EditText) rootView.findViewById(R.id.edit_text_numero));
         
         salvaButton_ = ((Button) rootView.findViewById(R.id.button_salva));
+        modificaButton_ = ((Button) rootView.findViewById(R.id.button_modifica));
         
-        if (cliente_ != null)
-        {
-            nomeText_.setText(cliente_.getNome());
-            cognomeText_.setText(cliente_.getCognome());
-            numeroText_.setText(cliente_.getNumero());
-            // TODO:
-            salvaButton_.setText("Modifica");
-        }
-        else
-        {
-            SDCard.resetTempFolder();
-        }
+        modificaButton_.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v)
+            {
+                View parent = (View) v.getParent();
+                if (parent != null)
+                {
+                    if (isInputEnabled_)
+                    {
+                        String nome = nomeText_.getText().toString();
+                        Log.v("Input:", "Nome:" + nome);
+                        
+                        String cognome = cognomeText_.getText().toString();
+                        Log.v("Input:", "Cognome:" + cognome);
+                        
+                        String numero = numeroText_.getText().toString();
+                        Log.v("Input:", "Numero:" + numero);
+                        
+                        boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoAcquisita_);
+                        
+                        AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
+                        String positiveButtonTitle = getResources().getString(R.string.button_ok);
+                        esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1)
+                            {
+                                // do nothing
+                            }
+                        });
+                        
+                        if (noEmpty)
+                        {
+                            User newUser = new User();
+                            newUser.setNome(nome);
+                            newUser.setCognome(cognome);
+                            newUser.setNumero(numero);
+                            
+                            SimpleDateFormat formatter = new SimpleDateFormat(Utils.DATE_FORMAT);
+                            newUser.setCreation(cliente_.getCreation());
+                            newUser.setUpdate(formatter.format(new Date()));
+                            
+                            boolean createUserFileOk = SDCard.updateUser(cliente_, newUser);
+                            boolean moveImagesOk = SDCard.moveTempImages(numero);
+                            if (createUserFileOk && moveImagesOk)
+                            {
+                                esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
+                                mDettaglioCallbacks.onStateChanged();
+                            }
+                            else
+                            {
+                                esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
+                            }
+                        }
+                        else
+                        {
+                            esitoDialog.setTitle(getResources().getString(R.string.dialog_vuoti_title));
+                            esitoDialog.setMessage(getResources().getString(R.string.dialog_vuoti_text));
+                        }
+                        esitoDialog.show(); 
+                    }
+                    else
+                    {
+                        modificaButton_.setText(salvaButton_.getText());
+                        enableNewInput(true);
+                    }                    
+                }
+            }
+        });
         
         salvaButton_.setOnClickListener(new OnClickListener() {
             
@@ -161,6 +216,7 @@ public class ClienteDetailFragment extends Fragment
                         
                         SimpleDateFormat formatter = new SimpleDateFormat(Utils.DATE_FORMAT);
                         user.setCreation(formatter.format(new Date()));
+                        user.setUpdate(formatter.format(new Date()));
                         
                         boolean createUserFileOk = SDCard.writeToSDFile(user);
                         boolean moveImagesOk = SDCard.moveTempImages(numero);
@@ -217,6 +273,23 @@ public class ClienteDetailFragment extends Fragment
                 startDialog(FOTO_DOCUMENTO_REQUEST);
             }
         });
+        
+        if (cliente_ != null)
+        {
+            nomeText_.setText(cliente_.getNome());
+            cognomeText_.setText(cliente_.getCognome());
+            numeroText_.setText(cliente_.getNumero());
+            salvaButton_.setVisibility(View.GONE);
+            modificaButton_.setVisibility(View.VISIBLE);
+            enableNewInput(false);
+        }
+        else
+        {
+            salvaButton_.setVisibility(View.VISIBLE);
+            modificaButton_.setVisibility(View.GONE);
+            enableNewInput(true);
+            SDCard.resetTempFolder();            
+        }
         
         return rootView;
     }
@@ -458,5 +531,15 @@ public class ClienteDetailFragment extends Fragment
         }
         
         return false;
+    }
+    
+    private void enableNewInput(boolean enable)
+    {        
+        isInputEnabled_ = enable;
+        nomeText_.setEnabled(enable);
+        cognomeText_.setEnabled(enable);
+        numeroText_.setEnabled(enable);
+        fotoVisoButton_.setEnabled(enable);
+        fotoDocumentoButton_.setEnabled(enable);
     }
 }

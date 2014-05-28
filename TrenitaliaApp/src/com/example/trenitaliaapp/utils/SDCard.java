@@ -28,14 +28,16 @@ public class SDCard
     
     public static final String APPFOLDER = "Trenitalia";
     
-    public static final int VISO = 0; 
-    public static final int DOCUMENTO = 1; 
+    public static final int VISO = 0;
+    
+    public static final int DOCUMENTO = 1;
     
     private static final String USERTXT = "user.txt";
     
     private static final String USERXML = "user.xml";
     
     private static final String VISO_FILENAME = "viso.png";
+    
     private static final String DOCUMENTO_FILENAME = "documento.png";
     
     private static final String NOME = "Nome";
@@ -139,7 +141,8 @@ public class SDCard
         }
         
         File[] list = dir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
+            public boolean accept(File dir, String name)
+            {
                 return !name.startsWith(".");
             }
         });
@@ -320,7 +323,7 @@ public class SDCard
         }
     }
     
-    public void updateUser(User oldUser, User newUser)
+    public static boolean updateUser(User oldUser, User newUser)
     {
         if (!oldUser.getNumero().equalsIgnoreCase(newUser.getNumero()))
         { // ho cambiato codice, rinomino la dir
@@ -331,35 +334,36 @@ public class SDCard
             oldDir.renameTo(newDir);
         }
         
-        writeToSDFile(newUser);
-        
+        return writeToSDFile(newUser);        
     }
     
-    public Bitmap getImage(User user, int tipo) {
-    	File root = android.os.Environment.getExternalStorageDirectory();
-       
-    	String fileName = root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero() + "/";
-    	
-    	if (tipo == VISO) {
-    		fileName = fileName + VISO_FILENAME;
-    	} else if (tipo ==DOCUMENTO ) {
-    		fileName = fileName + DOCUMENTO_FILENAME;
-    	}
-    	
-    	Bitmap bitmap;
-    	
-    	try {
-    		bitmap = BitmapFactory.decodeFile(fileName);
-    	} catch (Exception e) {
-    		Log.e(TAG, e.getMessage());
-    		return null;
-    	}	
+    public Bitmap getImage(User user, int tipo)
+    {
+        File root = android.os.Environment.getExternalStorageDirectory();
+        
+        String fileName = root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero() + "/";
+        
+        if (tipo == VISO)
+        {
+            fileName = fileName + VISO_FILENAME;
+        }
+        else if (tipo == DOCUMENTO)
+        {
+            fileName = fileName + DOCUMENTO_FILENAME;
+        }
+        
+        Bitmap bitmap;
+        
+        try
+        {
+            bitmap = BitmapFactory.decodeFile(fileName);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.getMessage());
+            return null;
+        }
         return bitmap;
     }
-    
-
-    
-    
-    
     
 }

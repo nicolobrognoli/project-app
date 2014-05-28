@@ -13,6 +13,7 @@
     <string name="text_view_foto_documento">Foto documento:</string>
     <string name="button_foto">Seleziona foto</string>
     <string name="button_foto_modifica">Modifica</string>
+    <string name="button_modifica">Modifica</string>    
 
     <!-- Lista elementi -->
     <string name="button_nuovo_text">Nuovo</string>
