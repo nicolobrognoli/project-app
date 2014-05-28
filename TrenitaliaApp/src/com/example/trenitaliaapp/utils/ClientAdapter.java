@@ -2,7 +2,10 @@ package com.example.trenitaliaapp.utils;
 
 import java.util.Vector;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.trenitaliaapp.ClienteDetailFragment.DettaglioCallbacks;
 import com.example.trenitaliaapp.R;
 
 public class ClientAdapter extends ArrayAdapter<User>
@@ -24,11 +26,16 @@ public class ClientAdapter extends ArrayAdapter<User>
     
     private AdapterCallback callback_;
     
-    Vector<User> userList_;
+    private Context context_;
+    
+    private Vector<User> userList_;
+    
+    private int positionDelete_;
     
     public ClientAdapter(Context context, int resource, Vector<User> objects)
     {
         super(context, resource, objects);
+        context_ = context;
         userList_ = objects;
         if (!(context instanceof AdapterCallback))
         {
@@ -62,11 +69,31 @@ public class ClientAdapter extends ArrayAdapter<User>
             @Override
             public void onClick(View v)
             {
-                int position = (Integer) v.getTag();
-                User user = userList_.get(position);
-                SDCard.deleteUser(user);
-                if (callback_ != null)
-                    callback_.onDelete(position);
+                AlertDialog.Builder confermaEliminazione = new AlertDialog.Builder(context_);
+                confermaEliminazione.setTitle(context_.getResources().getString(R.string.dialog_elimina_title));
+                confermaEliminazione.setMessage(context_.getResources().getString(R.string.dialog_elimina_text));
+                
+                positionDelete_ = (Integer) v.getTag();                
+                
+                String positiveButtonTitle = context_.getResources().getString(R.string.button_ok);
+                confermaEliminazione.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        User user = userList_.get(positionDelete_);
+                        SDCard.deleteUser(user);
+                        if (callback_ != null)
+                            callback_.onDelete(positionDelete_);
+                    }
+                });
+                
+                String negativeButtonTitle = context_.getResources().getString(R.string.button_annulla);
+                confermaEliminazione.setNegativeButton(negativeButtonTitle, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                        // do nothing                        
+                    }
+                });
+                confermaEliminazione.show();              
             }
         });
         

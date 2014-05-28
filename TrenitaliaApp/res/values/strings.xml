@@ -31,6 +31,12 @@
     <!-- Dialog esito -->
     <string name="dialog_ok_text">Salvataggio informazioni avvenuto con successo</string>
     <string name="dialog_ko_text">Errore nel salvataggio delle informazioni</string>
+
+    <!-- Dialog eliminazione -->
+
+    <string name="dialog_elimina_title">Elimina</string>
+    <string name="dialog_elimina_text">Confermare eliminazione?</string>
     <string name="button_ok">OK</string>
+    <string name="button_annulla">Annulla</string>
 
 </resources>
