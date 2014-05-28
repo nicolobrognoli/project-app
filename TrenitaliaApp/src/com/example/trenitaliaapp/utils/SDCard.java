@@ -3,6 +3,7 @@ package com.example.trenitaliaapp.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -127,7 +128,11 @@ public class SDCard
             return null;
         }
         
-        File[] list = dir.listFiles();
+        File[] list = dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return !name.startsWith(".*");
+            }
+        });
         if (list.length == 0)
         {
             Log.v(TAG, "APP dir is empty!");
