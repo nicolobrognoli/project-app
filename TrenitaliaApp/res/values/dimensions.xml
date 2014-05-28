@@ -11,5 +11,6 @@
 	<dimen name="separator_height">4dp</dimen>
 	<dimen name="list_separator_height">1dp</dimen>
 	
+	<dimen name="nuovo_button_width">40dp</dimen>
 	<dimen name="elimina_button_width">40dp</dimen>
 </resources>
