@@ -52,7 +52,7 @@ public class SDCard
     
     public static final String IMG_DOCUMENTO = "/documento.png";
     
-    public static void writeToSDFile(User user)
+    public static boolean writeToSDFile(User user)
     {
         
         File root = android.os.Environment.getExternalStorageDirectory();
@@ -80,6 +80,7 @@ public class SDCard
         catch (Exception e)
         {
             e.printStackTrace();
+            return false;
         }
         
         // XML user file
@@ -98,8 +99,9 @@ public class SDCard
         catch (Exception e)
         {
             e.printStackTrace();
+            return false;
         }
-        
+        return true;
     }
     
     private static String getSimpleText(User user)
@@ -227,7 +229,7 @@ public class SDCard
         return success;
     }
     
-    public static void moveTempImages(String number)
+    public static boolean moveTempImages(String number)
     {
         String srcPath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + APPFOLDER + TEMP_IMG_PATH;
         String destPath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + APPFOLDER + "/" + number;
@@ -235,14 +237,16 @@ public class SDCard
         File visoTempImg = new File(srcPath + TEMP_IMG_VISO);
         File visoDestImg = new File(destPath + IMG_VISO);
         
-        SDCard.copy(visoTempImg, visoDestImg);
+        boolean visoCopyOk = SDCard.copy(visoTempImg, visoDestImg);
         
         File documentoTempImg = new File(srcPath + TEMP_IMG_DOCUMENTO);
         File documentoDestImg = new File(destPath + IMG_DOCUMENTO);
-        SDCard.copy(documentoTempImg, documentoDestImg);
+        boolean documentoCopyOk = SDCard.copy(documentoTempImg, documentoDestImg);
+        
+        return visoCopyOk && documentoCopyOk;
     }
     
-    private static void copy(File src, File dst)
+    private static boolean copy(File src, File dst)
     {
         InputStream in = null;
         OutputStream out = null;
@@ -260,7 +264,7 @@ public class SDCard
         }
         catch (Exception e)
         {
-            // do nothing
+            return false;
         }
         finally
         {
@@ -271,9 +275,10 @@ public class SDCard
             }
             catch (Exception e2)
             {
-                // do nothing
+                return false;
             }
         }
+        return true;
     }
     
     public static void resetTempFolder()

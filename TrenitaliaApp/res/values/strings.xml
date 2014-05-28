@@ -23,6 +23,14 @@
     <string name="dialog_text">Selezionare origine immagine:</string>
     <string name="button_galleria">Galleria</string>
     <string name="button_camera">Fotocamera</string>
-    
+
+    <!-- Dialog campi vuoti -->
+    <string name="dialog_vuoti_title">Attenzione</string>
+    <string name="dialog_vuoti_text">Campi richiesti mancanti</string>
+
+    <!-- Dialog esito -->
+    <string name="dialog_ok_text">Salvataggio informazioni avvenuto con successo</string>
+    <string name="dialog_ko_text">Errore nel salvataggio delle informazioni</string>
+    <string name="button_ok">OK</string>
 
 </resources>
