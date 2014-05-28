@@ -103,7 +103,7 @@ public class SDCard
     
     private static String getSimpleText(User user)
     {
-        String simpleText = NOME + ": " + user.getNome() + "\n" + COGNOME + ": " + user.getCognome() + "\n" + NUMERO + ": " + user.getNumero() + "\n" + CREATION + ": " + user.getCreation() + "\n" + UPDATE + ":";
+        String simpleText = NOME + ": " + user.getNome() + "\n" + COGNOME + ": " + user.getCognome() + "\n" + NUMERO + ": " + user.getNumero() + "\n" + CREATION + ": " + user.getCreation() + "\n" + UPDATE + ": " + user.getUpdate() + "\n";
         Log.v(TAG, "Simple text: " + simpleText);
         return simpleText;
         
@@ -111,7 +111,7 @@ public class SDCard
     
     private static String getXMLElement(User user)
     {
-        String element = "<user>\n\t<" + NOME + ">" + user.getNome() + "</" + NOME + ">\n\t<" + COGNOME + ">" + user.getCognome() + "</" + COGNOME + ">\n\t<" + NUMERO + ">" + user.getNumero() + "</" + NUMERO + ">\n\t<" + CREATION + ">" + user.getCreation() + "</" + CREATION + ">\n\t<" + UPDATE + "></" + UPDATE + ">\n</user>";
+        String element = "<user>\n\t<" + NOME + ">" + user.getNome() + "</" + NOME + ">\n\t<" + COGNOME + ">" + user.getCognome() + "</" + COGNOME + ">\n\t<" + NUMERO + ">" + user.getNumero() + "</" + NUMERO + ">\n\t<" + CREATION + ">" + user.getCreation() + "</" + CREATION + ">\n\t<" + UPDATE + ">" + user.getUpdate() + "</" + UPDATE + ">\n</user>";
         Log.v(TAG, "XML element: " + element);
         return element;
     }
@@ -145,8 +145,8 @@ public class SDCard
             if (user != null)
             {
                 Log.d(TAG, "ho letto l'utente numero: " + user.getNumero());
-                users.add(user); 
-            }            
+                users.add(user);
+            }
         }
         
         return users;
@@ -210,11 +210,13 @@ public class SDCard
         return "";
     }
     
-    public boolean deleteUser(User user)
+    public static boolean deleteUser(User user)
     {
         File root = android.os.Environment.getExternalStorageDirectory();
         
         File oldDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero());
+        
+        // non cancella la directory dell'utente ma la rinomina comina come directory nascosta per consentire un ripristino.
         File backupDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/." + user.getNumero());
         boolean success = oldDir.renameTo(backupDir);
         return success;
@@ -298,6 +300,21 @@ public class SDCard
         {
             e.printStackTrace();
         }
+    }
+    
+    public void updateUser(User oldUser, User newUser)
+    {
+        if (!oldUser.getNumero().equalsIgnoreCase(newUser.getNumero()))
+        { // ho cambiato codice, rinomino la dir
+            File root = android.os.Environment.getExternalStorageDirectory();
+            
+            File oldDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + oldUser.getNumero());
+            File newDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + newUser.getNumero());
+            oldDir.renameTo(newDir);
+        }
+        
+        writeToSDFile(newUser);
+        
     }
     
 }
