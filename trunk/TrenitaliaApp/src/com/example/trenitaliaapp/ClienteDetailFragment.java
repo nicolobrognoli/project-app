@@ -116,7 +116,16 @@ public class ClienteDetailFragment extends Fragment
                     String numero = numeroText.getText().toString();
                     Log.v("Input:", "Numero:" + numero);
                     
-                    boolean noEmpty = chechEmptyFields();
+                    boolean noEmpty = chechEmptyFields(nome, cognome, numero, true, true);
+                    
+                    AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
+                    String positiveButtonTitle = getResources().getString(R.string.button_ok);
+                    esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1)
+                        {
+                            // do nothing
+                        }
+                    });
                     
                     if (noEmpty)
                     {
@@ -128,9 +137,23 @@ public class ClienteDetailFragment extends Fragment
                         SimpleDateFormat formatter = new SimpleDateFormat(Utils.DATE_FORMAT);
                         user.setCreation(formatter.format(new Date()));
                         
-                        SDCard.writeToSDFile(user);
-                        SDCard.moveTempImages(numero);
+                        boolean createUserFileOk = SDCard.writeToSDFile(user);
+                        boolean moveImagesOk = SDCard.moveTempImages(numero);
+                        if (createUserFileOk && moveImagesOk)
+                        {
+                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));  
+                        }
+                        else
+                        {
+                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
+                        }                    
                     }
+                    else
+                    {
+                        esitoDialog.setTitle(getResources().getString(R.string.dialog_vuoti_title));
+                        esitoDialog.setMessage(getResources().getString(R.string.dialog_vuoti_text));
+                    }
+                    esitoDialog.show();
                 }
             }
         });
@@ -210,7 +233,7 @@ public class ClienteDetailFragment extends Fragment
                         Toast.makeText(getActivity(), "Errore acquisizione immagine.", Toast.LENGTH_SHORT).show();
                         break;
                 }
-            }            
+            }
         }
     }
     
@@ -355,8 +378,22 @@ public class ClienteDetailFragment extends Fragment
         myAlertDialog.show();
     }
     
-    private boolean chechEmptyFields()
+    private boolean chechEmptyFields(String nome, String cognome, String numero, boolean fotoViso, boolean fotoDocumento)
     {
-        return true;
+        if (fotoViso && fotoDocumento)
+        {
+            if (nome != null && nome.length() > 0)
+            {
+                if (cognome != null && cognome.length() > 0)
+                {
+                    if (numero != null && numero.length() > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
     }
 }
