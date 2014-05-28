@@ -18,6 +18,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
@@ -26,9 +28,15 @@ public class SDCard
     
     public static final String APPFOLDER = "Trenitalia";
     
+    public static final int VISO = 0; 
+    public static final int DOCUMENTO = 1; 
+    
     private static final String USERTXT = "user.txt";
     
     private static final String USERXML = "user.xml";
+    
+    private static final String VISO_FILENAME = "viso.png";
+    private static final String DOCUMENTO_FILENAME = "documento.png";
     
     private static final String NOME = "Nome";
     
@@ -40,7 +48,7 @@ public class SDCard
     
     private static final String UPDATE = "Aggiornamento";
     
-    private static final String TAG = "MEDIA";
+    private static final String TAG = "TRENITALIA/SDCARD";
     
     public static final String TEMP_IMG_PATH = "/temp_images";
     
@@ -326,5 +334,32 @@ public class SDCard
         writeToSDFile(newUser);
         
     }
+    
+    public Bitmap getImage(User user, int tipo) {
+    	File root = android.os.Environment.getExternalStorageDirectory();
+       
+    	String fileName = root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero() + "/";
+    	
+    	if (tipo == VISO) {
+    		fileName = fileName + VISO_FILENAME;
+    	} else if (tipo ==DOCUMENTO ) {
+    		fileName = fileName + DOCUMENTO_FILENAME;
+    	}
+    	
+    	Bitmap bitmap;
+    	
+    	try {
+    		bitmap = BitmapFactory.decodeFile(fileName);
+    	} catch (Exception e) {
+    		Log.e(TAG, e.getMessage());
+    		return null;
+    	}	
+        return bitmap;
+    }
+    
+
+    
+    
+    
     
 }
