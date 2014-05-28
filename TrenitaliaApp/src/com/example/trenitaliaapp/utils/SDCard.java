@@ -132,7 +132,7 @@ public class SDCard
         
         File[] list = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return !name.startsWith(".*");
+                return !name.startsWith(".");
             }
         });
         if (list.length == 0)
