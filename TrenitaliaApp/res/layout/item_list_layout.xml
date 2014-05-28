@@ -14,14 +14,14 @@
             android:layout_width="@dimen/nuovo_button_width"
             android:layout_height="@dimen/nuovo_button_width"
             android:layout_gravity="right"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/greenborder"
             android:contentDescription="@string/content_description"
             android:src="@drawable/plus_icon_green" />
 
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/clienti_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/ti_deep_green"
@@ -30,4 +30,3 @@
     </LinearLayout>
 
 </FrameLayout>
-
