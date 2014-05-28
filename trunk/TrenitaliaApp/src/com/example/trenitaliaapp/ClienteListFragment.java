@@ -86,16 +86,20 @@ public class ClienteListFragment extends Fragment
         ListView list = (ListView) rootView.findViewById(R.id.clienti_list);
         SDCard sdCardUtils = new SDCard();
         Vector<User> userList = sdCardUtils.readAllUsers();
-        ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList);
-        list.setAdapter(clientAdapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-            {
-                mCallbacks.onItemSelected(arg2);
-            }
-        });
+        
+        if (userList != null && userList.size() > 0)
+        {
+            ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList);
+            list.setAdapter(clientAdapter);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+                {
+                    mCallbacks.onItemSelected(arg2);
+                }
+            });  
+        }     
         
         ImageButton nuovoButton = ((ImageButton) rootView.findViewById(R.id.button_nuovo));
         nuovoButton.setOnClickListener(new OnClickListener() {

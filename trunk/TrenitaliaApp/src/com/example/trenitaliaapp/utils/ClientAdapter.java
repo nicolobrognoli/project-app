@@ -5,7 +5,6 @@ import java.util.Vector;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +35,10 @@ public class ClientAdapter extends ArrayAdapter<User>
     {
         super(context, resource, objects);
         context_ = context;
-        userList_ = objects;
+        if (objects != null)
+            userList_ = objects;
+        else
+            userList_ = new Vector<User>();
         if (!(context instanceof AdapterCallback))
         {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");

@@ -115,5 +115,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/button_salva" />
+    
+    <Button
+        android:id="@+id/button_modifica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/button_modifica" />
 
 </LinearLayout>
