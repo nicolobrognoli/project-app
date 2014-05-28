@@ -168,13 +168,13 @@ public class ClienteDetailFragment extends Fragment
                             esitoDialog.setTitle(getResources().getString(R.string.dialog_vuoti_title));
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_vuoti_text));
                         }
-                        esitoDialog.show(); 
+                        esitoDialog.show();
                     }
                     else
                     {
                         modificaButton_.setText(salvaButton_.getText());
                         enableNewInput(true);
-                    }                    
+                    }
                 }
             }
         });
@@ -278,7 +278,9 @@ public class ClienteDetailFragment extends Fragment
         {
             nomeText_.setText(cliente_.getNome());
             cognomeText_.setText(cliente_.getCognome());
-            numeroText_.setText(cliente_.getNumero());
+            numeroText_.setText(cliente_.getNumero()); 
+            
+            
             salvaButton_.setVisibility(View.GONE);
             modificaButton_.setVisibility(View.VISIBLE);
             enableNewInput(false);
@@ -288,10 +290,36 @@ public class ClienteDetailFragment extends Fragment
             salvaButton_.setVisibility(View.VISIBLE);
             modificaButton_.setVisibility(View.GONE);
             enableNewInput(true);
-            SDCard.resetTempFolder();            
+            SDCard.resetTempFolder();
         }
         
         return rootView;
+    }
+    
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+        
+        if (cliente_ != null)
+        {
+            Bitmap bitmapViso = SDCard.getImage(cliente_, SDCard.VISO);
+            if (bitmapViso != null)
+            {
+                ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
+                imageView.setImageBitmap(bitmapViso);
+                imageView.setVisibility(View.VISIBLE);
+                fotoVisoAcquisita_ = true;
+            }
+            
+            Bitmap bitmapDocumento = SDCard.getImage(cliente_, SDCard.DOCUMENTO);
+            if (bitmapDocumento != null)
+            {
+                ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
+                imageView.setImageBitmap(bitmapDocumento);
+                imageView.setVisibility(View.VISIBLE);
+                fotoDocumentoAcquisita_ = true;
+            }
+        }        
     }
     
     @Override
@@ -534,7 +562,7 @@ public class ClienteDetailFragment extends Fragment
     }
     
     private void enableNewInput(boolean enable)
-    {        
+    {
         isInputEnabled_ = enable;
         nomeText_.setEnabled(enable);
         cognomeText_.setEnabled(enable);

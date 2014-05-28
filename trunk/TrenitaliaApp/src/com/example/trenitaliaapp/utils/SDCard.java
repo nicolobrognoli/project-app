@@ -337,7 +337,7 @@ public class SDCard
         return writeToSDFile(newUser);        
     }
     
-    public Bitmap getImage(User user, int tipo)
+    public static Bitmap getImage(User user, int tipo)
     {
         File root = android.os.Environment.getExternalStorageDirectory();
         
