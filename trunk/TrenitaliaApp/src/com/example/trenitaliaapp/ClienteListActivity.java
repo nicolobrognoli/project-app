@@ -3,6 +3,8 @@ package com.example.trenitaliaapp;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.example.trenitaliaapp.utils.ClientAdapter.AdapterCallback;
+
 /**
  * An activity representing a list of Clienti. This activity has different presentations for handset and tablet-size devices. On handsets, the activity presents a list of items, which when touched, lead to a {@link ClienteDetailActivity} representing item details. On tablets, the activity presents the list of items and item details side-by-side using two vertical panes.
  * <p>
@@ -10,7 +12,7 @@ import android.support.v4.app.FragmentActivity;
  * <p>
  * This activity also implements the required {@link ClienteListFragment.Callbacks} interface to listen for item selections.
  */
-public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks, ClienteDetailFragment.DettaglioCallbacks
+public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks, ClienteDetailFragment.DettaglioCallbacks, AdapterCallback
 {
     
     /**
@@ -22,7 +24,7 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cliente_twopane);      
+        setContentView(R.layout.activity_cliente_twopane);
         
         ClienteListFragment fragmentSx = new ClienteListFragment();
         getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
@@ -62,5 +64,11 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
         ClienteListFragment fragmentSx = new ClienteListFragment();
         getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
     }
-
+    
+    @Override
+    public void onDelete(int position)
+    {
+        ClienteListFragment fragmentSx = new ClienteListFragment();
+        getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
+    }
 }

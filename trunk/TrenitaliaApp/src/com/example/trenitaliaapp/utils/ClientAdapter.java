@@ -11,10 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.trenitaliaapp.ClienteDetailFragment.DettaglioCallbacks;
 import com.example.trenitaliaapp.R;
 
 public class ClientAdapter extends ArrayAdapter<User>
 {
+    public interface AdapterCallback
+    {
+        
+        public void onDelete(int position);
+    }
+    
+    private AdapterCallback callback_;
     
     Vector<User> userList_;
     
@@ -22,6 +30,12 @@ public class ClientAdapter extends ArrayAdapter<User>
     {
         super(context, resource, objects);
         userList_ = objects;
+        if (!(context instanceof AdapterCallback))
+        {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+        
+        callback_ = (AdapterCallback) context;
     }
     
     @Override
@@ -51,6 +65,8 @@ public class ClientAdapter extends ArrayAdapter<User>
                 int position = (Integer) v.getTag();
                 User user = userList_.get(position);
                 SDCard.deleteUser(user);
+                if (callback_ != null)
+                    callback_.onDelete(position);
             }
         });
         
