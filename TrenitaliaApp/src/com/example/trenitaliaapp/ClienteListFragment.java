@@ -35,10 +35,9 @@ public class ClienteListFragment extends Fragment
      */
     private Callbacks mCallbacks = callbacks;
     
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
+    private ListView list_;
+    
+    private Vector<User> userList_;
     
     /**
      * A callback interface that all activities containing this fragment must implement. This mechanism allows activities to be notified of item selections.
@@ -83,23 +82,23 @@ public class ClienteListFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.item_list_layout, container, false);
         
-        ListView list = (ListView) rootView.findViewById(R.id.clienti_list);
+        list_ = (ListView) rootView.findViewById(R.id.clienti_list);
         SDCard sdCardUtils = new SDCard();
-        Vector<User> userList = sdCardUtils.readAllUsers();
+        userList_ = sdCardUtils.readAllUsers();
         
-        if (userList != null && userList.size() > 0)
+        if (userList_ != null && userList_.size() > 0)
         {
-            ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList);
-            list.setAdapter(clientAdapter);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList_);
+            list_.setAdapter(clientAdapter);
+            list_.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
                 {
                     mCallbacks.onItemSelected(arg2);
                 }
-            });  
-        }     
+            });
+        }
         
         ImageButton nuovoButton = ((ImageButton) rootView.findViewById(R.id.button_nuovo));
         nuovoButton.setOnClickListener(new OnClickListener() {
@@ -111,20 +110,15 @@ public class ClienteListFragment extends Fragment
             }
         });
         
+        if (userList_ != null && userList_.size() > 0)
+        {
+            setActivatedPosition(0);
+        }
+        
         return rootView;
     }
     
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-        
-        // Restore the previously serialized activated item position.
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION))
-        {
-            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
-        }
-    }
+
     
     @Override
     public void onAttach(Activity activity)
@@ -137,7 +131,7 @@ public class ClienteListFragment extends Fragment
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
         
-        mCallbacks = (Callbacks) activity;
+        mCallbacks = (Callbacks) activity;       
     }
     
     @Override
@@ -148,39 +142,20 @@ public class ClienteListFragment extends Fragment
         // Reset the active callbacks interface to the dummy implementation.
         mCallbacks = callbacks;
     }
-    
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION)
-        {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
-        }
-    }
-    
+
     /**
      * Turns on activate-on-click mode. When this mode is on, list items will be given the 'activated' state when touched.
      */
     public void setActivateOnItemClick(boolean activateOnItemClick)
     {
-        // When setting CHOICE_MODE_SINGLE, ListView will automatically
-        // give items the 'activated' state when touched.
-        // getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
+        list_.setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
     }
     
     private void setActivatedPosition(int position)
     {
-        // if (position == ListView.INVALID_POSITION)
-        // {
-        // getListView().setItemChecked(mActivatedPosition, false);
-        // }
-        // else
-        // {
-        // getListView().setItemChecked(position, true);
-        // }
-        //
-        // mActivatedPosition = position;
+        if (position != ListView.INVALID_POSITION)
+        {
+            mCallbacks.onItemSelected(0);
+        }
     }
 }

@@ -18,8 +18,7 @@ import com.example.trenitaliaapp.R;
 public class ClientAdapter extends ArrayAdapter<User>
 {
     public interface AdapterCallback
-    {
-        
+    {        
         public void onDelete(int position);
     }
     
