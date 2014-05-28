@@ -1,9 +1,7 @@
 package com.example.trenitaliaapp;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
@@ -64,6 +62,10 @@ public class ClienteDetailFragment extends Fragment
     
     private User cliente_;
     
+    private boolean fotoVisoAcquisita_ = false;
+    
+    private boolean fotoDocumentoAcquisita_ = false;
+    
     public ClienteDetailFragment()
     {
     }
@@ -92,7 +94,7 @@ public class ClienteDetailFragment extends Fragment
         numeroText_ = ((EditText) rootView.findViewById(R.id.edit_text_numero));
         
         salvaButton_ = ((Button) rootView.findViewById(R.id.button_salva));
-        // Show the dummy content as text in a TextView.
+        
         if (cliente_ != null)
         {
             nomeText_.setText(cliente_.getNome());
@@ -123,7 +125,7 @@ public class ClienteDetailFragment extends Fragment
                     String numero = numeroText_.getText().toString();
                     Log.v("Input:", "Numero:" + numero);
                     
-                    boolean noEmpty = chechEmptyFields(nome, cognome, numero, true, true);
+                    boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoAcquisita_);
                     
                     AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
                     String positiveButtonTitle = getResources().getString(R.string.button_ok);
@@ -269,7 +271,7 @@ public class ClienteDetailFragment extends Fragment
             imageView.setVisibility(View.VISIBLE);
             
             String tempPath = root + SDCard.TEMP_IMG_PATH;
-            saveTempImage(tempPath, imagePathName, bitmap);
+            saveTempImage(tempPath, imagePathName, bitmap, imageType == FOTO_VISO_REQUEST);
         }
     }
     
@@ -310,14 +312,14 @@ public class ClienteDetailFragment extends Fragment
                     imageView.setImageBitmap(bitmap);
                     imageView.setVisibility(View.VISIBLE);
                     
-                    saveTempImage(tempPath, imagePathName, bitmap);
+                    saveTempImage(tempPath, imagePathName, bitmap, imageType == FOTO_VISO_REQUEST);
                 }
                 else
                 {
                     bmpDrawable = new BitmapDrawable(getResources(), data.getData().getPath());
                     imageView.setImageDrawable(bmpDrawable);
                     imageView.setVisibility(View.VISIBLE);
-                    saveTempImage(tempPath, imagePathName, bmpDrawable.getBitmap());
+                    saveTempImage(tempPath, imagePathName, bmpDrawable.getBitmap(), imageType == FOTO_VISO_REQUEST);
                 }
             }
         }
@@ -327,8 +329,16 @@ public class ClienteDetailFragment extends Fragment
         }
     }
     
-    private void saveTempImage(String tempPath, String imagePathName, Bitmap bitmap)
+    private void saveTempImage(String tempPath, String imagePathName, Bitmap bitmap, boolean isSalvataggioViso)
     {
+        if (isSalvataggioViso)
+        {
+            fotoVisoAcquisita_ = false;
+        }
+        else
+        {
+            fotoDocumentoAcquisita_ = false;
+        }
         try
         {
             File dir = new File(tempPath);
@@ -341,18 +351,26 @@ public class ClienteDetailFragment extends Fragment
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.close();
             Log.v("Salvataggio immagine:", "Saved: " + imagePathName);
-        }
-        catch (FileNotFoundException e)
-        {
-            Log.e("Errore:", e.toString());
-        }
-        catch (IOException e)
-        {
-            Log.e("Errore:", e.toString());
+            if (isSalvataggioViso)
+            {
+                fotoVisoAcquisita_ = true;
+            }
+            else
+            {
+                fotoDocumentoAcquisita_ = true;
+            }
         }
         catch (Exception e)
         {
             Log.e("Errore:", e.toString());
+            if (isSalvataggioViso)
+            {
+                fotoVisoAcquisita_ = false;
+            }
+            else
+            {
+                fotoDocumentoAcquisita_ = false;
+            }
         }
     }
     
