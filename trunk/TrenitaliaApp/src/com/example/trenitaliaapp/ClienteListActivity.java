@@ -1,6 +1,5 @@
 package com.example.trenitaliaapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -35,7 +34,7 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
             
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((ClienteListFragment) getSupportFragmentManager().findFragmentById(R.id.cliente_list)).setActivateOnItemClick(true);
+            // ((ClienteListFragment) getSupportFragmentManager().findFragmentById(R.id.cliente_list)).setActivateOnItemClick(true);
         }
         
         // TODO: If exposing deep links into your app, handle intents here.
@@ -45,27 +44,15 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
      * Callback method from {@link ClienteListFragment.Callbacks} indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id)
+    public void onItemSelected(int position)
     {
         if (mTwoPane)
         {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ClienteDetailFragment.ARG_ITEM_ID, id);
+            arguments.putInt(ClienteDetailFragment.ARG_ITEM_ID, position);
             ClienteDetailFragment fragment = new ClienteDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragment).commit();
-            
-        }
-        else
-        {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, ClienteDetailActivity.class);
-            detailIntent.putExtra(ClienteDetailFragment.ARG_ITEM_ID, id);
-            startActivity(detailIntent);
         }
     }
     

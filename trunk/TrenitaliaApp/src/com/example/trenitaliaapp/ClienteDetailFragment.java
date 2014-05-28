@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +30,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.trenitaliaapp.dummy.DummyContent;
 import com.example.trenitaliaapp.utils.SDCard;
 import com.example.trenitaliaapp.utils.User;
 import com.example.trenitaliaapp.utils.Utils;
@@ -56,14 +56,14 @@ public class ClienteDetailFragment extends Fragment
     
     private Button fotoDocumentoButton_;
     
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
+    private EditText nomeText_;
     
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-     */
+    private EditText cognomeText_;
+    
+    private EditText numeroText_;
+    
+    private User cliente_;
+    
     public ClienteDetailFragment()
     {
     }
@@ -75,10 +75,10 @@ public class ClienteDetailFragment extends Fragment
         
         if (getArguments() != null && getArguments().containsKey(ARG_ITEM_ID))
         {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            SDCard sdCardUtils = new SDCard();
+            Vector<User> clientiList = sdCardUtils.readAllUsers();
+            // TODO: controllo più robusto
+            cliente_ = clientiList.get(getArguments().getInt(ARG_ITEM_ID));
         }
     }
     
@@ -87,15 +87,25 @@ public class ClienteDetailFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.fragment_cliente_detail, container, false);
         
-        // Show the dummy content as text in a TextView.
-        if (mItem != null)
-        {
-            // ((TextView) rootView.findViewById(R.id.cliente_detail)).setText(mItem.content);
-        }
-        
-        SDCard.resetTempFolder();
+        nomeText_ = ((EditText) rootView.findViewById(R.id.edit_text_nome));
+        cognomeText_ = ((EditText) rootView.findViewById(R.id.edit_text_cognome));
+        numeroText_ = ((EditText) rootView.findViewById(R.id.edit_text_numero));
         
         salvaButton_ = ((Button) rootView.findViewById(R.id.button_salva));
+        // Show the dummy content as text in a TextView.
+        if (cliente_ != null)
+        {
+            nomeText_.setText(cliente_.getNome());
+            cognomeText_.setText(cliente_.getCognome());
+            numeroText_.setText(cliente_.getNumero());
+            // TODO:
+            salvaButton_.setText("Modifica");
+        }
+        else
+        {
+            SDCard.resetTempFolder();
+        }
+        
         salvaButton_.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -104,16 +114,13 @@ public class ClienteDetailFragment extends Fragment
                 View parent = (View) v.getParent();
                 if (parent != null)
                 {
-                    EditText nomeText = ((EditText) parent.findViewById(R.id.edit_text_nome));
-                    String nome = nomeText.getText().toString();
+                    String nome = nomeText_.getText().toString();
                     Log.v("Input:", "Nome:" + nome);
                     
-                    EditText cognomeText = ((EditText) parent.findViewById(R.id.edit_text_cognome));
-                    String cognome = cognomeText.getText().toString();
+                    String cognome = cognomeText_.getText().toString();
                     Log.v("Input:", "Cognome:" + cognome);
                     
-                    EditText numeroText = ((EditText) parent.findViewById(R.id.edit_text_numero));
-                    String numero = numeroText.getText().toString();
+                    String numero = numeroText_.getText().toString();
                     Log.v("Input:", "Numero:" + numero);
                     
                     boolean noEmpty = chechEmptyFields(nome, cognome, numero, true, true);
@@ -141,12 +148,12 @@ public class ClienteDetailFragment extends Fragment
                         boolean moveImagesOk = SDCard.moveTempImages(numero);
                         if (createUserFileOk && moveImagesOk)
                         {
-                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));  
+                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
                         }
                         else
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
-                        }                    
+                        }
                     }
                     else
                     {

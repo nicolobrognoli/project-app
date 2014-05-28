@@ -3,18 +3,16 @@ package com.example.trenitaliaapp;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.example.trenitaliaapp.dummy.DummyContent;
 import com.example.trenitaliaapp.utils.ClientAdapter;
 import com.example.trenitaliaapp.utils.SDCard;
 import com.example.trenitaliaapp.utils.User;
@@ -24,7 +22,7 @@ import com.example.trenitaliaapp.utils.User;
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
-public class ClienteListFragment extends ListFragment
+public class ClienteListFragment extends Fragment
 {
     
     /**
@@ -50,7 +48,7 @@ public class ClienteListFragment extends ListFragment
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(int id);
         
         /**
          * Callback for new input
@@ -63,7 +61,7 @@ public class ClienteListFragment extends ListFragment
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id)
+        public void onItemSelected(int id)
         {
         }
         
@@ -84,18 +82,26 @@ public class ClienteListFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
-        SDCard sdCardUtils = new SDCard();
-        Vector<User> userList = sdCardUtils.readAllUsers();
-        
-        ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList);
-        setListAdapter(clientAdapter);
     }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.item_list_layout, container, false);
+        
+        ListView list = (ListView)rootView.findViewById(R.id.clienti_list);
+        SDCard sdCardUtils = new SDCard();
+        Vector<User> userList = sdCardUtils.readAllUsers();
+        ClientAdapter clientAdapter = new ClientAdapter(getActivity(), R.layout.list_row, userList);
+        list.setAdapter(clientAdapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+            {
+                mCallbacks.onItemSelected(arg2);
+            }
+        });
         
         ImageButton nuovoButton = ((ImageButton) rootView.findViewById(R.id.button_nuovo));
         nuovoButton.setOnClickListener(new OnClickListener() {
@@ -144,16 +150,7 @@ public class ClienteListFragment extends ListFragment
         // Reset the active callbacks interface to the dummy implementation.
         mCallbacks = sDummyCallbacks;
     }
-    
-    @Override
-    public void onListItemClick(ListView listView, View view, int position, long id)
-    {
-        super.onListItemClick(listView, view, position, id);
-        
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-    }
+
     
     @Override
     public void onSaveInstanceState(Bundle outState)
@@ -173,20 +170,20 @@ public class ClienteListFragment extends ListFragment
     {
         // When setting CHOICE_MODE_SINGLE, ListView will automatically
         // give items the 'activated' state when touched.
-        getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
+//        getListView().setChoiceMode(activateOnItemClick ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
     }
     
     private void setActivatedPosition(int position)
     {
-        if (position == ListView.INVALID_POSITION)
-        {
-            getListView().setItemChecked(mActivatedPosition, false);
-        }
-        else
-        {
-            getListView().setItemChecked(position, true);
-        }
-        
-        mActivatedPosition = position;
+//        if (position == ListView.INVALID_POSITION)
+//        {
+//            getListView().setItemChecked(mActivatedPosition, false);
+//        }
+//        else
+//        {
+//            getListView().setItemChecked(position, true);
+//        }
+//        
+//        mActivatedPosition = position;
     }
 }
