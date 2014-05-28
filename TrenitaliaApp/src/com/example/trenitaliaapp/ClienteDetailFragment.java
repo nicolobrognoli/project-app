@@ -66,6 +66,22 @@ public class ClienteDetailFragment extends Fragment
     
     private boolean fotoDocumentoAcquisita_ = false;
     
+    private DettaglioCallbacks mDettaglioCallbacks = dettaglioCallbacks;
+    
+    private static DettaglioCallbacks dettaglioCallbacks = new DettaglioCallbacks() {
+        
+        @Override
+        public void onStateChanged()
+        {
+        }
+        
+    };
+    
+    public interface DettaglioCallbacks
+    {
+        public void onStateChanged();
+    }
+    
     public ClienteDetailFragment()
     {
     }
@@ -151,6 +167,7 @@ public class ClienteDetailFragment extends Fragment
                         if (createUserFileOk && moveImagesOk)
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
+                            mDettaglioCallbacks.onStateChanged();
                         }
                         else
                         {
@@ -202,6 +219,27 @@ public class ClienteDetailFragment extends Fragment
         });
         
         return rootView;
+    }
+    
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof DettaglioCallbacks))
+        {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+        
+        mDettaglioCallbacks = (DettaglioCallbacks) activity;
+    }
+    
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        mDettaglioCallbacks = dettaglioCallbacks;
     }
     
     public void onActivityResult(int requestCode, int resultCode, Intent data)
