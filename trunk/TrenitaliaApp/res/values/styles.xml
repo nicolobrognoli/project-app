@@ -16,5 +16,13 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowNoTitle">true</item>
     </style>
+    
+    <style name="RowLabelStyle" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/ti_deep_green</item>
+    </style>
+    
+    <style name="FormLabelStyle" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/ti_deep_green</item>
+    </style>
 
 </resources>
