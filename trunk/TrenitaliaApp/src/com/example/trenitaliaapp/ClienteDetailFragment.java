@@ -36,6 +36,10 @@ public class ClienteDetailFragment extends Fragment
 {
     public static final String ARG_ITEM_ID = "item_id";
     
+    private static final String VISO_BITMAP = "viso_bitmap";
+    
+    private static final String DOCUMENTO_BITMAP = "documento_bitmap";
+    
     private static final int FOTO_VISO_REQUEST = 2;
     
     private static final int FOTO_DOCUMENTO_REQUEST = 3;
@@ -63,6 +67,10 @@ public class ClienteDetailFragment extends Fragment
     private boolean fotoDocumentoAcquisita_ = false;
     
     private boolean isInputEnabled_ = true;
+    
+    private Bitmap bitmapViso_;
+    
+    private Bitmap bitmapDocumento_;
     
     private DettaglioCallbacks mDettaglioCallbacks = dettaglioCallbacks;
     
@@ -291,7 +299,8 @@ public class ClienteDetailFragment extends Fragment
             salvaButton_.setVisibility(View.VISIBLE);
             modificaButton_.setVisibility(View.GONE);
             enableNewInput(true);
-            SDCard.resetTempFolder();
+            if (savedInstanceState == null)
+            	SDCard.resetTempFolder();
         }
         
         return rootView;
@@ -303,24 +312,31 @@ public class ClienteDetailFragment extends Fragment
         
         if (cliente_ != null)
         {
-            Bitmap bitmapViso = SDCard.getImage(cliente_, SDCard.VISO);
-            if (bitmapViso != null)
-            {
-                ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
-                imageView.setImageBitmap(bitmapViso);
-                imageView.setVisibility(View.VISIBLE);
-                fotoVisoAcquisita_ = true;
-            }
-            
-            Bitmap bitmapDocumento = SDCard.getImage(cliente_, SDCard.DOCUMENTO);
-            if (bitmapDocumento != null)
-            {
-                ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
-                imageView.setImageBitmap(bitmapDocumento);
-                imageView.setVisibility(View.VISIBLE);
-                fotoDocumentoAcquisita_ = true;
-            }
-        }        
+        	bitmapViso_ = SDCard.getImage(cliente_, SDCard.VISO);
+        	bitmapDocumento_ = SDCard.getImage(cliente_, SDCard.DOCUMENTO);
+        }
+        else if (savedInstanceState != null)
+        {
+        	bitmapViso_ = savedInstanceState.getParcelable(VISO_BITMAP);
+        	bitmapDocumento_ = savedInstanceState.getParcelable(DOCUMENTO_BITMAP);
+        }  
+        
+        if (bitmapViso_ != null)
+        {
+            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
+            imageView.setImageBitmap(bitmapViso_);
+            imageView.setVisibility(View.VISIBLE);
+            fotoVisoAcquisita_ = true;
+        }
+        
+        
+        if (bitmapDocumento_ != null)
+        {
+            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
+            imageView.setImageBitmap(bitmapDocumento_);
+            imageView.setVisibility(View.VISIBLE);
+            fotoDocumentoAcquisita_ = true;
+        }                
     }
     
     @Override
@@ -397,12 +413,14 @@ public class ClienteDetailFragment extends Fragment
             
             if (imageType == FOTO_VISO_REQUEST)
             {
+            	bitmapViso_ = bitmap;
                 imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
                 fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             else if (imageType == FOTO_DOCUMENTO_REQUEST)
             {
+            	bitmapDocumento_ = bitmap;
                 imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
                 fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
@@ -559,7 +577,7 @@ public class ClienteDetailFragment extends Fragment
             }
         }
         
-        return true;
+        return false;
     }
     
     private void enableNewInput(boolean enable)
@@ -571,4 +589,11 @@ public class ClienteDetailFragment extends Fragment
         fotoVisoButton_.setEnabled(enable);
         fotoDocumentoButton_.setEnabled(enable);
     }
+    
+    @Override
+	public void onSaveInstanceState(Bundle state) {
+		super.onSaveInstanceState(state);
+		state.putParcelable(VISO_BITMAP, bitmapViso_);
+		state.putParcelable(DOCUMENTO_BITMAP, bitmapDocumento_);
+	}
 }
