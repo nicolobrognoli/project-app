@@ -4,7 +4,7 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:layout_width="@dimen/img_width"
+        android:layout_width="@dimen/logo_img_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/content_description"

@@ -9,6 +9,8 @@
 	<dimen name="logo_img_width">200dp</dimen>
 
 	<dimen name="separator_height">4dp</dimen>
+	<dimen name="vertical_separator_height">2dp</dimen>
+	
 	<dimen name="list_separator_height">1dp</dimen>
 	
 	<dimen name="nuovo_button_width">40dp</dimen>

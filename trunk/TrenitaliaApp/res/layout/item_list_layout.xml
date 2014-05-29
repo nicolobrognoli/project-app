@@ -16,7 +16,7 @@
             android:layout_gravity="right"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/greenborder"
+            android:background="@drawable/greenbutton"
             android:contentDescription="@string/content_description"
             android:src="@drawable/plus_icon_green" />
 
