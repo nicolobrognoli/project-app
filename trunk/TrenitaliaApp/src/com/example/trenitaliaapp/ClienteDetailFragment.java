@@ -228,6 +228,7 @@ public class ClienteDetailFragment extends Fragment
                         else
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
+                            mDettaglioCallbacks.onStateChanged();
                         }
                     }
                     else
@@ -558,7 +559,7 @@ public class ClienteDetailFragment extends Fragment
             }
         }
         
-        return false;
+        return true;
     }
     
     private void enableNewInput(boolean enable)
