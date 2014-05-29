@@ -13,4 +13,6 @@
 	
 	<dimen name="nuovo_button_width">40dp</dimen>
 	<dimen name="elimina_button_width">40dp</dimen>
+	
+	<dimen name="item_margin_top">10dp</dimen>
 </resources>

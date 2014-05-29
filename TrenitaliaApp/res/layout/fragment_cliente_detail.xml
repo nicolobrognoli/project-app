@@ -1,17 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_element_height"
-        android:orientation="horizontal" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp" >
 
         <TextView
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_nome" />
+            android:text="@string/text_view_nome" 
+            style="@style/FormLabelStyle"/>
 
         <EditText
             android:id="@+id/edit_text_nome"
@@ -26,12 +30,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_element_height"
-        android:orientation="horizontal" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/item_margin_top" >
 
         <TextView
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_cognome" />
+            android:text="@string/text_view_cognome" 
+            style="@style/FormLabelStyle"/>
 
         <EditText
             android:id="@+id/edit_text_cognome"
@@ -44,12 +51,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_element_height"
-        android:orientation="horizontal" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" 
+        android:layout_marginTop="@dimen/item_margin_top">
 
         <TextView
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_numero" />
+            android:text="@string/text_view_numero" 
+            style="@style/FormLabelStyle"/>
 
         <EditText
             android:id="@+id/edit_text_numero"
@@ -62,20 +72,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/item_margin_top" >
 
         <TextView
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_viso" />
+            android:text="@string/text_view_foto_viso" 
+            style="@style/FormLabelStyle"/>
 
         <ImageView
             android:id="@+id/imageview_foto_viso"
             android:layout_width="@dimen/img_width"
             android:layout_height="@dimen/img_width"
-            android:contentDescription="@string/content_description" 
-            android:visibility="gone"/>
+            android:contentDescription="@string/content_description"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_foto_viso"
@@ -87,13 +99,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:gravity="center"
+        android:orientation="horizontal" 
+        android:layout_marginTop="@dimen/item_margin_top">
 
         <TextView
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_documento" />
+            android:text="@string/text_view_foto_documento" 
+            style="@style/FormLabelStyle"/>
 
         <ImageView
             android:id="@+id/imageview_foto_documento"
@@ -114,13 +128,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/button_salva" />
-    
+        android:text="@string/button_salva" 
+        android:layout_marginTop="@dimen/item_margin_top"/>
+
     <Button
         android:id="@+id/button_modifica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/button_modifica" />
+        android:text="@string/button_modifica" 
+        android:layout_marginTop="@dimen/item_margin_top"/>
 
 </LinearLayout>
