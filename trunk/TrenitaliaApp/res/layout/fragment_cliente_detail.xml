@@ -92,7 +92,7 @@
             android:layout_width="@dimen/img_width"
             android:layout_height="@dimen/img_width"
             android:contentDescription="@string/content_description"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button_foto_viso"
