@@ -5,13 +5,6 @@ import android.support.v4.app.FragmentActivity;
 
 import com.example.trenitaliaapp.utils.ClientAdapter.AdapterCallback;
 
-/**
- * An activity representing a list of Clienti. This activity has different presentations for handset and tablet-size devices. On handsets, the activity presents a list of items, which when touched, lead to a {@link ClienteDetailActivity} representing item details. On tablets, the activity presents the list of items and item details side-by-side using two vertical panes.
- * <p>
- * The activity makes heavy use of fragments. The list of items is a {@link ClienteListFragment} and the item details (if present) is a {@link ClienteDetailFragment}.
- * <p>
- * This activity also implements the required {@link ClienteListFragment.Callbacks} interface to listen for item selections.
- */
 public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks, ClienteDetailFragment.DettaglioCallbacks, AdapterCallback
 {
     
@@ -21,16 +14,16 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_twopane);
         
-        ClienteListFragment fragmentSx = new ClienteListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
-        
-        ClienteDetailFragment fragmentDx = new ClienteDetailFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragmentDx).commit();
+        if (savedInstanceState == null)
+        {
+        	ClienteListFragment fragmentSx = new ClienteListFragment();
+            getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
+            
+            ClienteDetailFragment fragmentDx = new ClienteDetailFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragmentDx).commit();
+        }        
     }
-    
-    /**
-     * Callback method from {@link ClienteListFragment.Callbacks} indicating that the item with the given ID was selected.
-     */
+
     @Override
     public void onItemSelected(int position)
     {
