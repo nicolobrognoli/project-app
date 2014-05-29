@@ -31,7 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/greenborder"
+        android:background="@drawable/greenbutton"
         android:contentDescription="@string/content_description"
         android:src="@drawable/trash" />
 

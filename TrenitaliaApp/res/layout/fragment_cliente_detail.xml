@@ -98,7 +98,11 @@
             android:id="@+id/button_foto_viso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_foto" />
+            android:text="@string/button_foto"
+            android:background="@drawable/greenbutton"
+            android:textColor="@color/ti_deep_green"
+            android:textSize="16sp"
+             />
     </LinearLayout>
 
     <LinearLayout
@@ -128,7 +132,10 @@
             android:id="@+id/button_foto_documento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_foto" />
+            android:text="@string/button_foto"
+            android:background="@drawable/redbutton"
+            android:textColor="@color/ti_red"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <Button
@@ -137,7 +144,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:text="@string/button_salva" />
+        android:text="@string/button_salva"
+        android:background="@drawable/redbutton"
+        android:textColor="@color/ti_red"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/button_modifica"
@@ -145,6 +155,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:text="@string/button_modifica" />
+        android:background="@drawable/redbutton"
+        android:text="@string/button_modifica"
+        android:textColor="@color/ti_red"
+        android:textSize="18sp" />
 
 </RelativeLayout>

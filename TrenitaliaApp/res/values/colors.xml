@@ -6,5 +6,6 @@
     <!-- Colori Trenitalia -->
     <color name="ti_red">#DC002E</color>
     <color name="ti_deep_green">#006263</color>
+    <color name="ti_light_gray">#D3D3D3</color>
 
 </resources>
