@@ -1,21 +1,21 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical" >
+    android:layout_gravity="center" >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layout_nome"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/detail_element_height"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_marginTop="50dp" >
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal" >
 
         <TextView
+            style="@style/FormLabelStyle"
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_nome" 
-            style="@style/FormLabelStyle"/>
+            android:text="@string/text_view_nome" />
 
         <EditText
             android:id="@+id/edit_text_nome"
@@ -28,17 +28,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layout_cognome"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/detail_element_height"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/item_margin_top" >
+        android:layout_below="@+id/layout_nome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:orientation="horizontal" >
 
         <TextView
+            style="@style/FormLabelStyle"
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_cognome" 
-            style="@style/FormLabelStyle"/>
+            android:text="@string/text_view_cognome" />
 
         <EditText
             android:id="@+id/edit_text_cognome"
@@ -49,17 +51,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layout_numero"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/detail_element_height"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" 
-        android:layout_marginTop="@dimen/item_margin_top">
+        android:layout_below="@+id/layout_cognome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:orientation="horizontal" >
 
         <TextView
+            style="@style/FormLabelStyle"
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_numero" 
-            style="@style/FormLabelStyle"/>
+            android:text="@string/text_view_numero" />
 
         <EditText
             android:id="@+id/edit_text_numero"
@@ -70,17 +74,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layout_foto_viso"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/item_margin_top" >
+        android:layout_alignLeft="@+id/layout_numero"
+        android:layout_below="@+id/layout_numero"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:orientation="horizontal" >
 
         <TextView
+            style="@style/FormLabelStyle"
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_viso" 
-            style="@style/FormLabelStyle"/>
+            android:text="@string/text_view_foto_viso" />
 
         <ImageView
             android:id="@+id/imageview_foto_viso"
@@ -97,17 +103,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layout_foto_documento"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal" 
-        android:layout_marginTop="@dimen/item_margin_top">
+        android:layout_alignLeft="@+id/layout_numero"
+        android:layout_below="@+id/layout_foto_viso"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:orientation="horizontal" >
 
         <TextView
+            style="@style/FormLabelStyle"
             android:layout_width="@dimen/detail_label_width"
             android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_documento" 
-            style="@style/FormLabelStyle"/>
+            android:text="@string/text_view_foto_documento" />
 
         <ImageView
             android:id="@+id/imageview_foto_documento"
@@ -127,16 +135,16 @@
         android:id="@+id/button_salva"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/button_salva" 
-        android:layout_marginTop="@dimen/item_margin_top"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:text="@string/button_salva" />
 
     <Button
         android:id="@+id/button_modifica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/button_modifica" 
-        android:layout_marginTop="@dimen/item_margin_top"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:text="@string/button_modifica" />
 
-</LinearLayout>
+</RelativeLayout>
