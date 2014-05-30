@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -448,7 +447,8 @@ public class ClienteDetailFragment extends Fragment
                 imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
                 fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
-            setThumbImageView(imageView, bitmap);
+            Bitmap thumbBitmap = Bitmap.createBitmap(bitmap);
+            setThumbImageView(imageView, thumbBitmap);
             imageView.setVisibility(View.VISIBLE);
             
             String tempPath = root + SDCard.TEMP_IMG_PATH;
