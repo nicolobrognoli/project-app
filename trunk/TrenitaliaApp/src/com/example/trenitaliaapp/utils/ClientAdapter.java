@@ -18,7 +18,7 @@ import com.example.trenitaliaapp.R;
 public class ClientAdapter extends ArrayAdapter<User>
 {
     public interface AdapterCallback
-    {        
+    {
         public void onDelete(int position);
     }
     
@@ -74,7 +74,7 @@ public class ClientAdapter extends ArrayAdapter<User>
                 confermaEliminazione.setTitle(context_.getResources().getString(R.string.dialog_elimina_title));
                 confermaEliminazione.setMessage(context_.getResources().getString(R.string.dialog_elimina_text));
                 
-                positionDelete_ = (Integer) v.getTag();                
+                positionDelete_ = (Integer) v.getTag();
                 
                 String positiveButtonTitle = context_.getResources().getString(R.string.button_ok);
                 confermaEliminazione.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
@@ -91,10 +91,10 @@ public class ClientAdapter extends ArrayAdapter<User>
                 confermaEliminazione.setNegativeButton(negativeButtonTitle, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1)
                     {
-                        // do nothing                        
+                        // do nothing
                     }
                 });
-                confermaEliminazione.show();              
+                confermaEliminazione.show();
             }
         });
         

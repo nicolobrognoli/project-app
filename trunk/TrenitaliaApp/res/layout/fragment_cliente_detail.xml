@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center" 
-    android:background="@color/white">
+    android:layout_gravity="center"
+    android:background="@color/white" >
 
     <LinearLayout
         android:id="@+id/layout_nome"
@@ -92,6 +92,7 @@
             android:id="@+id/imageview_foto_viso"
             android:layout_width="@dimen/img_width"
             android:layout_height="@dimen/img_width"
+            android:layout_marginRight="20dp"
             android:contentDescription="@string/content_description"
             android:visibility="gone" />
 
@@ -99,11 +100,10 @@
             android:id="@+id/button_foto_viso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_foto"
             android:background="@drawable/greenbutton_big"
+            android:text="@string/button_foto"
             android:textColor="@color/ti_deep_green"
-            android:textSize="16sp"
-             />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,6 +126,7 @@
             android:id="@+id/imageview_foto_documento"
             android:layout_width="@dimen/img_width"
             android:layout_height="@dimen/img_width"
+            android:layout_marginRight="20dp"
             android:contentDescription="@string/content_description"
             android:visibility="gone" />
 
@@ -133,8 +134,8 @@
             android:id="@+id/button_foto_documento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_foto"
             android:background="@drawable/greenbutton_big"
+            android:text="@string/button_foto"
             android:textColor="@color/ti_deep_green"
             android:textSize="16sp" />
     </LinearLayout>
@@ -145,8 +146,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/item_margin_top"
-        android:text="@string/button_salva"
         android:background="@drawable/redbutton"
+        android:text="@string/button_salva"
         android:textColor="@color/ti_red"
         android:textSize="18sp" />
 
