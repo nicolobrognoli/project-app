@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_foto"
-            android:background="@drawable/greenbutton"
+            android:background="@drawable/greenbutton_big"
             android:textColor="@color/ti_deep_green"
             android:textSize="16sp"
              />
@@ -133,9 +133,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_foto"
-            android:background="@drawable/redbutton"
-            android:textColor="@color/ti_red"
-            android:textSize="18sp" />
+            android:background="@drawable/greenbutton_big"
+            android:textColor="@color/ti_deep_green"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
