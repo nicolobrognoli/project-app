@@ -81,8 +81,8 @@ public class ClientAdapter extends ArrayAdapter<User>
                     public void onClick(DialogInterface arg0, int arg1)
                     {
                         User user = userList_.get(positionDelete_);
-                        SDCard.deleteUser(user);
-                        if (callback_ != null)
+                        boolean success = SDCard.deleteUser(user);
+                        if (callback_ != null && success)
                             callback_.onDelete(positionDelete_);
                     }
                 });
