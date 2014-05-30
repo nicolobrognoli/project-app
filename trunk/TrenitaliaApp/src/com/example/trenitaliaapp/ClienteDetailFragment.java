@@ -16,11 +16,13 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +50,8 @@ public class ClienteDetailFragment extends Fragment
     private static final int FOTO_DOCUMENTO_REQUEST = 3;
     
     private static final int GALLERY = 100;
+    
+    private Uri intentData_;
     
     private Button salvaButton_;
     
@@ -322,18 +326,17 @@ public class ClienteDetailFragment extends Fragment
         {
             bitmapViso_ = savedInstanceState.getParcelable(VISO_BITMAP);
             bitmapDocumento_ = savedInstanceState.getParcelable(DOCUMENTO_BITMAP);
-            setupImagePreview(VISO_BITMAP);
-            setupImagePreview(DOCUMENTO_BITMAP);
-            
+            new SetUpPreview().execute(VISO_BITMAP);
+            new SetUpPreview().execute(DOCUMENTO_BITMAP);
         }
         else if (cliente_ != null)
         {
             
             dialogAttesa_ = ProgressDialog.show(getActivity(), null, null, true);
             loadingDocumento_ = loadingViso_ = true;
-            new LoadImageFromGallery().execute(VISO_BITMAP);
+            new LoadImagePreviewFromGallery().execute(VISO_BITMAP);
             
-            new LoadImageFromGallery().execute(DOCUMENTO_BITMAP);
+            new LoadImagePreviewFromGallery().execute(DOCUMENTO_BITMAP);
         }
     }
     
@@ -404,6 +407,7 @@ public class ClienteDetailFragment extends Fragment
     {
         if (imageType == VISO_BITMAP && bitmapViso_ != null)
         {
+            FragmentActivity activity = getActivity();
             ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
             setThumbImageView(imageView, bitmapViso_);
             imageView.setVisibility(View.VISIBLE);
@@ -456,69 +460,19 @@ public class ClienteDetailFragment extends Fragment
     {
         if (data != null)
         {
-            BitmapDrawable bmpDrawable = null;
-            ImageView imageView = null;
-            String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + SDCard.APPFOLDER + "/";
-            String imagePathName = "";
-            
+            // TODO
+            intentData_ = data.getData();
+            String type = "";
             if (imageType == FOTO_VISO_REQUEST)
             {
-                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
-                imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
-                fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+                type = VISO_BITMAP;
             }
             else if (imageType == FOTO_DOCUMENTO_REQUEST)
             {
-                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
-                imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
-                fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+                type = DOCUMENTO_BITMAP;
             }
-            
-            if (data != null && data.getData() != null)
-            {
-                Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
-                String tempPath = root + SDCard.TEMP_IMG_PATH;
-                if (cursor != null)
-                {
-                    cursor.moveToFirst();
-                    
-                    int idx = cursor.getColumnIndex(ImageColumns.DATA);
-                    String fileSrc = cursor.getString(idx);
-                    Bitmap bitmap = BitmapFactory.decodeFile(fileSrc);
-                    
-                    // TODO
-                    if (imageType == FOTO_VISO_REQUEST)
-                    {
-                        bitmapViso_ = bitmap;
-                    }
-                    else if (imageType == FOTO_DOCUMENTO_REQUEST)
-                    {
-                        bitmapDocumento_ = bitmap;
-                    }
-                    setThumbImageView(imageView, bitmap);
-                    imageView.setVisibility(View.VISIBLE);
-                    
-                    saveTempImage(tempPath, imagePathName, bitmap, imageType == FOTO_VISO_REQUEST);
-                }
-                else
-                {
-                    bmpDrawable = new BitmapDrawable(getResources(), data.getData().getPath());
-                    // TODO
-                    if (imageType == FOTO_VISO_REQUEST)
-                    {
-                        bitmapViso_ = bmpDrawable.getBitmap();
-                        setThumbImageView(imageView, bitmapViso_);
-                    }
-                    else if (imageType == FOTO_DOCUMENTO_REQUEST)
-                    {
-                        bitmapDocumento_ = bmpDrawable.getBitmap();
-                        setThumbImageView(imageView, bitmapDocumento_);
-                    }
-                    
-                    imageView.setVisibility(View.VISIBLE);
-                    saveTempImage(tempPath, imagePathName, bmpDrawable.getBitmap(), imageType == FOTO_VISO_REQUEST);
-                }
-            }
+            dialogAttesa_ = ProgressDialog.show(getActivity(), "", "");
+            new ImportImageFromGallery().execute(type);
         }
         else
         {
@@ -647,7 +601,7 @@ public class ClienteDetailFragment extends Fragment
         state.putParcelable(DOCUMENTO_BITMAP, bitmapDocumento_);
     }
     
-    private class LoadImageFromGallery extends AsyncTask<String, Void, String>
+    private class LoadImagePreviewFromGallery extends AsyncTask<String, Void, String>
     {
         @Override
         protected String doInBackground(String... params)
@@ -695,6 +649,231 @@ public class ClienteDetailFragment extends Fragment
         }
     }
     
+    private class ImportImageFromGallery extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected String doInBackground(String... params)
+        {
+            
+            String imageType = params[0];
+            // if (imageType == VISO_BITMAP)
+            // {
+            // bitmapViso_ = SDCard.getPreviewImage(cliente_, SDCard.VISO);
+            // }
+            //
+            // if (imageType == DOCUMENTO_BITMAP)
+            // {
+            // bitmapDocumento_ = SDCard.getPreviewImage(cliente_, SDCard.DOCUMENTO);
+            // }
+            BitmapDrawable bmpDrawable = null;
+            // ImageView imageView = null;
+            // String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + SDCard.APPFOLDER + "/";
+            // String imagePathName = "";
+            //
+            // if (imageType == VISO_BITMAP)
+            // {
+            // imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
+            // imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_viso);
+            // fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            // }
+            // else if (imageType == DOCUMENTO_BITMAP)
+            // {
+            // imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
+            // imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
+            // fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            // }
+            
+            if (intentData_ != null)
+            {
+                Cursor cursor = getActivity().getContentResolver().query(intentData_, null, null, null, null);
+                // String tempPath = root + SDCard.TEMP_IMG_PATH;
+                if (cursor != null)
+                {
+                    cursor.moveToFirst();
+                    
+                    int idx = cursor.getColumnIndex(ImageColumns.DATA);
+                    String fileSrc = cursor.getString(idx);
+                    Bitmap bitmap = BitmapFactory.decodeFile(fileSrc);
+                    
+                    // TODO
+                    if (imageType == VISO_BITMAP)
+                    {
+                        bitmapViso_ = bitmap;
+                    }
+                    else if (imageType == DOCUMENTO_BITMAP)
+                    {
+                        bitmapDocumento_ = bitmap;
+                    }
+                    // setThumbImageView(imageView, bitmap);
+                    // imageView.setVisibility(View.VISIBLE);
+                    //
+                    // saveTempImage(tempPath, imagePathName, bitmap, imageType == VISO_BITMAP);
+                }
+                else
+                {
+                    bmpDrawable = new BitmapDrawable(getResources(), intentData_.getPath());
+                    // TODO
+                    if (imageType == VISO_BITMAP)
+                    {
+                        bitmapViso_ = bmpDrawable.getBitmap();
+                        // setThumbImageView(imageView, bitmapViso_);
+                    }
+                    else if (imageType == DOCUMENTO_BITMAP)
+                    {
+                        bitmapDocumento_ = bmpDrawable.getBitmap();
+                        // setThumbImageView(imageView, bitmapDocumento_);
+                    }
+                    
+                    // imageView.setVisibility(View.VISIBLE);
+                    // saveTempImage(tempPath, imagePathName, bmpDrawable.getBitmap(), imageType == VISO_BITMAP);
+                }
+            }
+            
+            return imageType;
+        }
+        
+        @Override
+        protected void onPostExecute(String result)
+        {
+            if (result == VISO_BITMAP)
+            {
+                loadingViso_ = false;
+                
+            }
+            
+            if (result == DOCUMENTO_BITMAP)
+            {
+                
+            }
+            // Bitmap bitmap = null;
+            // String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + SDCard.APPFOLDER + "/";
+            // String tempPath = root + SDCard.TEMP_IMG_PATH;
+            // String imagePathName = "";
+            
+            if (result == VISO_BITMAP)
+            {
+                // imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
+                fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+                // bitmap = bitmapViso_;
+            }
+            else if (result == DOCUMENTO_BITMAP)
+            {
+                // imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
+                fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+                // bitmap = bitmapDocumento_;
+            }
+            // saveTempImage(tempPath, imagePathName, bitmap, result == VISO_BITMAP);
+            new SaveTempImageFromGallery().execute(result);
+            setupImagePreview(result);
+        }
+        
+        @Override
+        protected void onPreExecute()
+        {
+        }
+        
+        @Override
+        protected void onProgressUpdate(Void... values)
+        {
+        }
+    }
+    
+    private class SaveTempImageFromGallery extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected String doInBackground(String... params)
+        {
+            
+            String imageType = params[0];
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + SDCard.APPFOLDER + "/";
+            String tempPath = root + SDCard.TEMP_IMG_PATH;
+            String imagePathName = "";
+            Bitmap bitmap = null;
+            
+            if (imageType == VISO_BITMAP)
+            {
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_VISO;
+                bitmap = bitmapViso_;
+                loadingViso_ = false;
+            }
+            else if (imageType == DOCUMENTO_BITMAP)
+            {
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
+                bitmap = bitmapDocumento_;
+                loadingDocumento_ = false;
+            }
+            saveTempImage(tempPath, imagePathName, bitmap, imageType == VISO_BITMAP);
+            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+                dialogAttesa_.dismiss();
+            
+            return imageType;
+        }
+        
+        @Override
+        protected void onPostExecute(String result)
+        {
+            if (result == VISO_BITMAP)
+            {
+                loadingViso_ = false;
+            }
+            
+            if (result == DOCUMENTO_BITMAP)
+            {
+                loadingDocumento_ = false;
+            }
+            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+                dialogAttesa_.dismiss();
+        }
+        
+        @Override
+        protected void onPreExecute()
+        {
+        }
+        
+        @Override
+        protected void onProgressUpdate(Void... values)
+        {
+        }
+    }
+    
+    private class SetUpPreview extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected String doInBackground(String... params)
+        {
+            
+            String imageType = params[0];
+            setupImagePreview(imageType);
+            return imageType;
+        }
+        
+        @Override
+        protected void onPostExecute(String result)
+        {
+            if (result == VISO_BITMAP)
+            {
+                loadingViso_ = false;
+            }
+            
+            if (result == DOCUMENTO_BITMAP)
+            {
+                loadingDocumento_ = false;
+            }
+            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+                dialogAttesa_.dismiss();
+        }
+        
+        @Override
+        protected void onPreExecute()
+        {
+        }
+        
+        @Override
+        protected void onProgressUpdate(Void... values)
+        {
+        }
+    }
+    
     private void setThumbImageView(ImageView imageview, Bitmap bitmap)
     {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -705,4 +884,5 @@ public class ClienteDetailFragment extends Fragment
         imageview.setImageBitmap(BitmapFactory.decodeByteArray(array, 0, array.length));
         imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
+    
 }
