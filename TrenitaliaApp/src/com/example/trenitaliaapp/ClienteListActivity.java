@@ -16,14 +16,14 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
         
         if (savedInstanceState == null)
         {
-        	ClienteListFragment fragmentSx = new ClienteListFragment();
+            ClienteListFragment fragmentSx = new ClienteListFragment();
             getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
             
             ClienteDetailFragment fragmentDx = new ClienteDetailFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragmentDx).commit();
-        }        
+        }
     }
-
+    
     @Override
     public void onItemSelected(int position)
     {
