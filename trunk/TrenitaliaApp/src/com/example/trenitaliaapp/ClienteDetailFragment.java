@@ -173,8 +173,8 @@ public class ClienteDetailFragment extends Fragment
                             newUser.setUpdate(formatter.format(new Date()));
                             
                             boolean createUserFileOk = SDCard.updateUser(cliente_, newUser);
-                            boolean moveImagesOk = SDCard.moveTempImages(numero);
-                            if (createUserFileOk && moveImagesOk)
+                            SDCard.moveTempImages(numero);
+                            if (createUserFileOk)
                             {
                                 esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
                                 mDettaglioCallbacks.onStateChanged();
@@ -305,6 +305,7 @@ public class ClienteDetailFragment extends Fragment
             salvaButton_.setVisibility(View.GONE);
             modificaButton_.setVisibility(View.VISIBLE);
             enableNewInput(false);
+            SDCard.resetTempFolder();
         }
         else
         {
@@ -513,14 +514,6 @@ public class ClienteDetailFragment extends Fragment
         catch (Exception e)
         {
             Log.e("Errore:", e.toString());
-            if (isSalvataggioViso)
-            {
-                fotoVisoAcquisita_ = false;
-            }
-            else
-            {
-                fotoDocumentoAcquisita_ = false;
-            }
         }
     }
     
@@ -701,13 +694,12 @@ public class ClienteDetailFragment extends Fragment
         {
             if (result == VISO_BITMAP)
             {
-                loadingViso_ = false;
-                
+                loadingViso_ = false;                
             }
             
             if (result == DOCUMENTO_BITMAP)
             {
-                
+                loadingDocumento_ = false;
             }
             
             if (result == VISO_BITMAP)

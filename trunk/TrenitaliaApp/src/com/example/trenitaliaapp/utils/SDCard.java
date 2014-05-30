@@ -232,12 +232,33 @@ public class SDCard
     {
         File root = android.os.Environment.getExternalStorageDirectory();
         
-        File oldDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero());
-        
-        // non cancella la directory dell'utente ma la rinomina comina come directory nascosta per consentire un ripristino.
-        File backupDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/." + user.getNumero());
-        boolean success = oldDir.renameTo(backupDir);
+        File directory = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero());
+        boolean success = deleteDirectory(directory);
         return success;
+    }
+    
+    private static boolean deleteDirectory(File path)
+    {
+        if (path.exists())
+        {
+            File[] files = path.listFiles();
+            if (files == null)
+            {
+                return true;
+            }
+            for (int i = 0; i < files.length; i++)
+            {
+                if (files[i].isDirectory())
+                {
+                    deleteDirectory(files[i]);
+                }
+                else
+                {
+                    files[i].delete();
+                }
+            }
+        }
+        return (path.delete());
     }
     
     public static boolean moveTempImages(String number)
@@ -334,7 +355,7 @@ public class SDCard
             oldDir.renameTo(newDir);
         }
         
-        return writeToSDFile(newUser);        
+        return writeToSDFile(newUser);
     }
     
     public static Bitmap getImage(User user, int tipo)
@@ -385,16 +406,14 @@ public class SDCard
         
         try
         {
-            
-            
-         // First decode with inJustDecodeBounds=true to check dimensions
+            // First decode with inJustDecodeBounds=true to check dimensions
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(fileName, options);
-
+            
             // Calculate inSampleSize
             options.inSampleSize = calculateInSampleSize(options, 50, 50);
-
+            
             // Decode bitmap with inSampleSize set
             options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeFile(fileName, options);
@@ -407,27 +426,28 @@ public class SDCard
         return bitmap;
     }
     
-    private static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-    // Raw height and width of image
-    final int height = options.outHeight;
-    final int width = options.outWidth;
-    int inSampleSize = 1;
-
-    if (height > reqHeight || width > reqWidth) {
-
-        final int halfHeight = height / 2;
-        final int halfWidth = width / 2;
-
-        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-        // height and width larger than the requested height and width.
-        while ((halfHeight / inSampleSize) > reqHeight
-                && (halfWidth / inSampleSize) > reqWidth) {
-            inSampleSize *= 2;
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
+    {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        
+        if (height > reqHeight || width > reqWidth)
+        {
+            
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth)
+            {
+                inSampleSize *= 2;
+            }
         }
+        
+        return inSampleSize;
     }
-
-    return inSampleSize;
-}
     
 }
