@@ -607,6 +607,16 @@ public class ClienteDetailFragment extends Fragment {
 		numeroText_.setEnabled(enable);
 		fotoVisoButton_.setEnabled(enable);
 		fotoDocumentoButton_.setEnabled(enable);
+		if (enable)
+		{
+			fotoVisoButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
+			fotoDocumentoButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
+		}
+		else
+		{
+			fotoVisoButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
+			fotoDocumentoButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
+		}
 	}
 
 	@Override
