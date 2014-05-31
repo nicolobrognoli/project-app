@@ -618,12 +618,12 @@ public class ClienteDetailFragment extends Fragment
         {
             if (result == VISO_BITMAP)
             {
-                loadingViso_ = false;
+                loadingViso_ = false;                
             }
             
             if (result == DOCUMENTO_BITMAP)
             {
-                loadingDocumento_ = false;
+                loadingDocumento_ = false;                
             }
             if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
                 dialogAttesa_.dismiss();
@@ -667,11 +667,13 @@ public class ClienteDetailFragment extends Fragment
             if (result == VISO_BITMAP)
             {
                 loadingViso_ = false;
+                fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             
             if (result == DOCUMENTO_BITMAP)
             {
                 loadingDocumento_ = false;
+                fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
                 dialogAttesa_.dismiss();

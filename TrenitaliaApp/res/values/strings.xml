@@ -4,7 +4,7 @@
     <string name="content_description">Immagine</string>
 
     <!-- View dettaglio -->
-    <string name="app_name">TrenitaliaApp</string>
+    <string name="app_name">Registrazione</string>
     <string name="title_cliente_detail">Cliente Detail</string>
     <string name="text_view_nome">Nome:</string>
     <string name="text_view_cognome">Cognome:</string>
