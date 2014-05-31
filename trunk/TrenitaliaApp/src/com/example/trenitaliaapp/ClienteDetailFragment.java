@@ -834,6 +834,7 @@ public class ClienteDetailFragment extends Fragment
     private void setThumbImageView(ImageView imageview, Bitmap bitmap)
     {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, false);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 60, os);
         
         byte[] array = os.toByteArray();
