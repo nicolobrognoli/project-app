@@ -114,7 +114,6 @@ public class ClienteDetailFragment extends Fragment
         {
             SDCard sdCardUtils = new SDCard();
             Vector<User> clientiList = sdCardUtils.readAllUsers();
-            // TODO: controllo più robusto
             cliente_ = clientiList.get(getArguments().getInt(ARG_ITEM_ID));
         }
     }
@@ -710,7 +709,6 @@ public class ClienteDetailFragment extends Fragment
                     String fileSrc = cursor.getString(idx);
                     Bitmap bitmap = BitmapFactory.decodeFile(fileSrc);
                     
-                    // TODO
                     if (imageType == VISO_BITMAP)
                     {
                         bitmapViso_ = bitmap;
@@ -723,7 +721,7 @@ public class ClienteDetailFragment extends Fragment
                 else
                 {
                     bmpDrawable = new BitmapDrawable(getResources(), intentData_.getPath());
-                    // TODO
+                    
                     if (imageType == VISO_BITMAP)
                     {
                         bitmapViso_ = bmpDrawable.getBitmap();
@@ -843,5 +841,4 @@ public class ClienteDetailFragment extends Fragment
         imageview.setImageBitmap(BitmapFactory.decodeByteArray(array, 0, array.length));
         imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
-    
 }
