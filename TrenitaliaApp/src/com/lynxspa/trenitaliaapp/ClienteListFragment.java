@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.lynxspa.trenitaliaapp.R;
 import com.lynxspa.trenitaliaapp.utils.ClientAdapter;
 import com.lynxspa.trenitaliaapp.utils.SDCard;
 import com.lynxspa.trenitaliaapp.utils.User;

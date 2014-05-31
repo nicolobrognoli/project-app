@@ -3,7 +3,6 @@ package com.lynxspa.trenitaliaapp;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.lynxspa.trenitaliaapp.R;
 import com.lynxspa.trenitaliaapp.utils.ClientAdapter.AdapterCallback;
 
 public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks, ClienteDetailFragment.DettaglioCallbacks, AdapterCallback
