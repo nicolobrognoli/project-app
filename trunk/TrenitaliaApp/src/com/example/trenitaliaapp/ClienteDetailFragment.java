@@ -171,17 +171,21 @@ public class ClienteDetailFragment extends Fragment
                             newUser.setCreation(cliente_.getCreation());
                             newUser.setUpdate(formatter.format(new Date()));
                             
-                            boolean createUserFileOk = SDCard.updateUser(cliente_, newUser);
+                            String createUserFileOk = SDCard.updateUser(cliente_, newUser);
                             SDCard.moveTempImages(numero);
-                            if (createUserFileOk)
+                            if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS))
                             {
                                 esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
                                 mDettaglioCallbacks.onStateChanged();
                             }
+                            else if (createUserFileOk.equalsIgnoreCase(SDCard.DIR_ESISTENTE))
+                            {
+                                esitoDialog.setMessage(getResources().getString(R.string.dialog_dir_exist_text));
+                            }
                             else
                             {
                                 esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
-                            }
+                            }                         
                         }
                         else
                         {

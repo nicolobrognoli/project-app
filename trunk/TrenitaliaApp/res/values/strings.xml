@@ -32,6 +32,7 @@
     <!-- Dialog esito -->
     <string name="dialog_ok_text">Salvataggio informazioni avvenuto con successo</string>
     <string name="dialog_ko_text">Errore nel salvataggio delle informazioni</string>
+    <string name="dialog_dir_exist_text">Errore: numero esistente</string>
 
     <!-- Dialog eliminazione -->
 
