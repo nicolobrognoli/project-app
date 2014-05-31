@@ -242,18 +242,25 @@ public class ClienteDetailFragment extends Fragment
                         user.setCreation(formatter.format(new Date()));
                         user.setUpdate(formatter.format(new Date()));
                         
-                        boolean createUserFileOk = SDCard.writeToSDFile(user);
-                        boolean moveImagesOk = SDCard.moveTempImages(numero);
-                        if (createUserFileOk && moveImagesOk)
+                        String createUserFileOk = SDCard.writeToSDFile(user, false);
+                        boolean moveImagesOk = false;
+                        if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS))
+                            moveImagesOk = SDCard.moveTempImages(numero);
+                        if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS) && moveImagesOk)
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
+                            mDettaglioCallbacks.onStateChanged();
+                        }
+                        else if (createUserFileOk.equalsIgnoreCase(SDCard.DIR_ESISTENTE))
+                        {
+                            esitoDialog.setMessage(getResources().getString(R.string.dialog_dir_exist_text));
                             mDettaglioCallbacks.onStateChanged();
                         }
                         else
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
                             mDettaglioCallbacks.onStateChanged();
-                        }
+                        }                      
                     }
                     else
                     {
@@ -336,7 +343,7 @@ public class ClienteDetailFragment extends Fragment
         else if (cliente_ != null)
         {
             
-            dialogAttesa_ = ProgressDialog.show(getActivity(), null, null, true);
+            dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
             loadingDocumento_ = loadingViso_ = true;
             new LoadImagePreviewFromGallery().execute(VISO_BITMAP);
             
@@ -475,12 +482,12 @@ public class ClienteDetailFragment extends Fragment
             {
                 type = DOCUMENTO_BITMAP;
             }
-            dialogAttesa_ = ProgressDialog.show(getActivity(), "", "");
+            dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
             new ImportImageFromGallery().execute(type);
         }
         else
         {
-            Toast.makeText(getActivity().getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Cancellato", Toast.LENGTH_SHORT).show();
         }
     }
     
