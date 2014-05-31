@@ -1,4 +1,4 @@
-package com.example.trenitaliaapp.utils;
+package com.lynxspa.trenitaliaapp.utils;
 
 
 public class Utils

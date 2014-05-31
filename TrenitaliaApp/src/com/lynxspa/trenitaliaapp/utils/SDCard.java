@@ -1,4 +1,4 @@
-package com.example.trenitaliaapp.utils;
+package com.lynxspa.trenitaliaapp.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package com.example.trenitaliaapp;
+package com.lynxspa.trenitaliaapp;
 
 import java.util.Vector;
 
@@ -13,9 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.example.trenitaliaapp.utils.ClientAdapter;
-import com.example.trenitaliaapp.utils.SDCard;
-import com.example.trenitaliaapp.utils.User;
+import com.lynxspa.trenitaliaapp.R;
+import com.lynxspa.trenitaliaapp.utils.ClientAdapter;
+import com.lynxspa.trenitaliaapp.utils.SDCard;
+import com.lynxspa.trenitaliaapp.utils.User;
 
 public class ClienteListFragment extends Fragment
 {

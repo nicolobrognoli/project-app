@@ -1,4 +1,4 @@
-package com.example.trenitaliaapp.utils;
+package com.lynxspa.trenitaliaapp.utils;
 
 import java.util.Vector;
 
@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.trenitaliaapp.R;
+import com.lynxspa.trenitaliaapp.R;
 
 public class ClientAdapter extends ArrayAdapter<User>
 {
