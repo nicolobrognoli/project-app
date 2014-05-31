@@ -463,6 +463,44 @@ public class SDCard
         return bitmap;
     }
     
+    public static Bitmap getPreviewImageTemp(int tipo)
+    {
+        File root = android.os.Environment.getExternalStorageDirectory();
+        
+        String fileName = root.getAbsolutePath() + "/" + APPFOLDER + SDCard.TEMP_IMG_PATH;
+        if (tipo == VISO)
+        {
+            fileName = fileName + TEMP_IMG_VISO;
+        }
+        else if (tipo == DOCUMENTO)
+        {
+            fileName = fileName + TEMP_IMG_DOCUMENTO;
+        }
+        
+        Bitmap bitmap;
+        
+        try
+        {
+            // First decode with inJustDecodeBounds=true to check dimensions
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(fileName, options);
+            
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, 50, 50);
+            
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFile(fileName, options);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.getMessage());
+            return null;
+        }
+        return bitmap;
+    }
+    
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
     {
         // Raw height and width of image
