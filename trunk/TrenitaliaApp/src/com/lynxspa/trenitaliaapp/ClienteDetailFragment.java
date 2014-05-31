@@ -1,4 +1,4 @@
-package com.example.trenitaliaapp;
+package com.lynxspa.trenitaliaapp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,9 +32,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.trenitaliaapp.utils.SDCard;
-import com.example.trenitaliaapp.utils.User;
-import com.example.trenitaliaapp.utils.Utils;
+import com.lynxspa.trenitaliaapp.R;
+import com.lynxspa.trenitaliaapp.utils.SDCard;
+import com.lynxspa.trenitaliaapp.utils.User;
+import com.lynxspa.trenitaliaapp.utils.Utils;
 
 public class ClienteDetailFragment extends Fragment
 {
