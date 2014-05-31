@@ -62,6 +62,12 @@ public class SDCard
     
     public static final String IMG_DOCUMENTO = "/documento.png";
     
+    public static final String DIR_ESISTENTE = "directory_esistente";
+    
+    public static final String SUCCESS = "success";
+    
+    public static final String FAIL = "fail";
+    
     public static boolean writeToSDFile(User user)
     {
         
@@ -344,18 +350,51 @@ public class SDCard
         }
     }
     
-    public static boolean updateUser(User oldUser, User newUser)
+    public static String updateUser(User oldUser, User newUser)
     {
+        String renameOk = SUCCESS;
         if (!oldUser.getNumero().equalsIgnoreCase(newUser.getNumero()))
-        { // ho cambiato codice, rinomino la dir
+        {
+            renameOk = FAIL;
+            // Number changed, rename directory
             File root = android.os.Environment.getExternalStorageDirectory();
             
             File oldDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + oldUser.getNumero());
+            // Check if directory already exists
             File newDir = new File(root.getAbsolutePath() + "/" + APPFOLDER + "/" + newUser.getNumero());
-            oldDir.renameTo(newDir);
+            
+            if (newDir.exists())
+            {
+                renameOk = DIR_ESISTENTE;
+            }
+            else
+            {
+                if (oldDir.renameTo(newDir))
+                {
+                    renameOk = SUCCESS;
+                }
+                else
+                {
+                    renameOk = FAIL;
+                }
+            }
         }
         
-        return writeToSDFile(newUser);
+        if (renameOk.equalsIgnoreCase(SUCCESS))
+        {
+            if (writeToSDFile(newUser))
+            {
+                return SUCCESS;
+            }
+            else
+            {
+                return FAIL;
+            }
+        }
+        else
+        {
+            return renameOk;
+        }
     }
     
     public static Bitmap getImage(User user, int tipo)
