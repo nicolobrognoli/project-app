@@ -22,7 +22,7 @@
             android:id="@+id/edit_text_nome"
             android:layout_width="@dimen/detail_edit_text_width"
             android:layout_height="@dimen/detail_element_height"
-            android:inputType="textPersonName" >
+            android:inputType="textCapSentences" >
         </EditText>
     </LinearLayout>
 
@@ -45,7 +45,7 @@
             android:id="@+id/edit_text_cognome"
             android:layout_width="@dimen/detail_edit_text_width"
             android:layout_height="@dimen/detail_element_height"
-            android:inputType="textPersonName" >
+            android:inputType="textCapSentences" >
         </EditText>
     </LinearLayout>
 
