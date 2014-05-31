@@ -68,7 +68,7 @@ public class SDCard
     
     public static final String FAIL = "fail";
     
-    public static boolean writeToSDFile(User user)
+    public static String writeToSDFile(User user, boolean modifica)
     {
         
         File root = android.os.Environment.getExternalStorageDirectory();
@@ -79,6 +79,11 @@ public class SDCard
         {
             Log.v(TAG, "User dir doesn't exist! creating " + root.getAbsolutePath() + "/" + APPFOLDER + "/" + user.getNumero());
             dir.mkdirs();
+        }
+        else
+        {
+            if (!modifica)
+                return DIR_ESISTENTE;
         }
         
         File filetxt = new File(dir, USERTXT);
@@ -96,7 +101,7 @@ public class SDCard
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return FAIL;
         }
         
         // XML user file
@@ -115,9 +120,9 @@ public class SDCard
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return FAIL;
         }
-        return true;
+        return SUCCESS;
     }
     
     private static String getSimpleText(User user)
@@ -382,14 +387,7 @@ public class SDCard
         
         if (renameOk.equalsIgnoreCase(SUCCESS))
         {
-            if (writeToSDFile(newUser))
-            {
-                return SUCCESS;
-            }
-            else
-            {
-                return FAIL;
-            }
+            return writeToSDFile(newUser, true);
         }
         else
         {
