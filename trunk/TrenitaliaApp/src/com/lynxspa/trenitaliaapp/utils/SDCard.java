@@ -18,8 +18,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -68,7 +71,7 @@ public class SDCard
     
     public static final String FAIL = "fail";
     
-    public static String writeToSDFile(User user, boolean modifica)
+    public static String writeToSDFile(User user, boolean modifica, Activity activity)
     {
         
         File root = android.os.Environment.getExternalStorageDirectory();
@@ -122,6 +125,7 @@ public class SDCard
             e.printStackTrace();
             return FAIL;
         }
+        refreshFileSystem(activity);
         return SUCCESS;
     }
     
@@ -355,7 +359,7 @@ public class SDCard
         }
     }
     
-    public static String updateUser(User oldUser, User newUser)
+    public static String updateUser(User oldUser, User newUser, Activity activity)
     {
         String renameOk = SUCCESS;
         if (!oldUser.getNumero().equalsIgnoreCase(newUser.getNumero()))
@@ -387,7 +391,7 @@ public class SDCard
         
         if (renameOk.equalsIgnoreCase(SUCCESS))
         {
-            return writeToSDFile(newUser, true);
+            return writeToSDFile(newUser, true, activity);
         }
         else
         {
@@ -523,6 +527,13 @@ public class SDCard
         }
         
         return inSampleSize;
+    }
+    
+    public static void refreshFileSystem(Activity activity)
+    {
+        Uri uri = Uri.parse("file://" + Environment.getExternalStorageDirectory());
+        Intent intent = new Intent(Intent.ACTION_MEDIA_MOUNTED, uri);
+        activity.sendBroadcast(intent);
     }
     
 }

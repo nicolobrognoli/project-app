@@ -32,7 +32,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.lynxspa.trenitaliaapp.R;
 import com.lynxspa.trenitaliaapp.utils.SDCard;
 import com.lynxspa.trenitaliaapp.utils.User;
 import com.lynxspa.trenitaliaapp.utils.Utils;
@@ -171,7 +170,7 @@ public class ClienteDetailFragment extends Fragment
                             newUser.setCreation(cliente_.getCreation());
                             newUser.setUpdate(formatter.format(new Date()));
                             
-                            String createUserFileOk = SDCard.updateUser(cliente_, newUser);
+                            String createUserFileOk = SDCard.updateUser(cliente_, newUser, getActivity());
                             SDCard.moveTempImages(numero);
                             if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS))
                             {
@@ -242,7 +241,7 @@ public class ClienteDetailFragment extends Fragment
                         user.setCreation(formatter.format(new Date()));
                         user.setUpdate(formatter.format(new Date()));
                         
-                        String createUserFileOk = SDCard.writeToSDFile(user, false);
+                        String createUserFileOk = SDCard.writeToSDFile(user, false, getActivity());
                         boolean moveImagesOk = false;
                         if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS))
                             moveImagesOk = SDCard.moveTempImages(numero);
@@ -278,12 +277,14 @@ public class ClienteDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                String root = Environment.getExternalStorageDirectory().toString() + SDCard.APPFOLDER;
+                String root = Environment.getExternalStorageDirectory().toString() + "/" + SDCard.APPFOLDER;
                 
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
                 imagesFolder.mkdirs();
+                
+                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_VISO_REQUEST);
             }
@@ -295,12 +296,14 @@ public class ClienteDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                String root = Environment.getExternalStorageDirectory().toString() + SDCard.APPFOLDER;
+                String root = Environment.getExternalStorageDirectory().toString() + "/" + SDCard.APPFOLDER;
                 
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
                 imagesFolder.mkdirs();
+                
+                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_DOCUMENTO_REQUEST);
             }
@@ -488,6 +491,7 @@ public class ClienteDetailFragment extends Fragment
             if (!dir.exists())
             {
                 dir.mkdirs();
+                SDCard.refreshFileSystem(getActivity());
             }
             
             FileOutputStream out = new FileOutputStream(imagePathName);
