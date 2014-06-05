@@ -28,12 +28,17 @@ import android.util.Log;
 
 public class SDCard
 {
-    
     public static final String APPFOLDER = "Trenitalia";
     
     public static final int VISO = 0;
     
-    public static final int DOCUMENTO = 1;
+    public static final int DOCUMENTO_FRONTE = 1;
+    
+    public static final int DOCUMENTO_RETRO = 2;
+    
+    public static final int MODULO_FRONTE = 3;
+    
+    public static final int MODULO_RETRO = 4;
     
     private static final String USERTXT = "user.txt";
     
@@ -41,7 +46,13 @@ public class SDCard
     
     private static final String VISO_FILENAME = "viso.png";
     
-    private static final String DOCUMENTO_FILENAME = "documento.png";
+    private static final String DOCUMENTO_FRONTE_FILENAME = "documento_fronte.png";
+    
+    private static final String DOCUMENTO_RETRO_FILENAME = "documento_retro.png";
+    
+    private static final String MODULO_FRONTE_FILENAME = "modulo_fronte.png";
+    
+    private static final String MODULO_RETRO_FILENAME = "modulo_retro.png";
     
     private static final String NOME = "Nome";
     
@@ -59,11 +70,23 @@ public class SDCard
     
     public static final String TEMP_IMG_VISO = "/viso_temp.png";
     
-    public static final String TEMP_IMG_DOCUMENTO = "/documento_temp.png";
+    public static final String TEMP_IMG_DOCUMENTO_FRONTE = "/documento_fronte_temp.png";
     
-    public static final String IMG_VISO = "/viso.png";
+    public static final String TEMP_IMG_DOCUMENTO_RETRO = "/documento_retro_temp.png";
     
-    public static final String IMG_DOCUMENTO = "/documento.png";
+    public static final String TEMP_IMG_MODULO_FRONTE = "/modulo_fronte_temp.png";
+    
+    public static final String TEMP_IMG_MODULO_RETRO = "/modulo_retro_temp.png";
+    
+    public static final String IMG_VISO = "/" + VISO_FILENAME;
+    
+    public static final String IMG_DOCUMENTO_FRONTE = "/" + DOCUMENTO_FRONTE_FILENAME;
+    
+    public static final String IMG_DOCUMENTO_RETRO = "/" + DOCUMENTO_RETRO_FILENAME;
+    
+    public static final String IMG_MODULO_FRONTE = "/" + MODULO_FRONTE_FILENAME;
+    
+    public static final String IMG_MODULO_RETRO = "/" + MODULO_RETRO_FILENAME;
     
     public static final String DIR_ESISTENTE = "directory_esistente";
     
@@ -286,11 +309,23 @@ public class SDCard
         
         boolean visoCopyOk = SDCard.copy(visoTempImg, visoDestImg);
         
-        File documentoTempImg = new File(srcPath + TEMP_IMG_DOCUMENTO);
-        File documentoDestImg = new File(destPath + IMG_DOCUMENTO);
-        boolean documentoCopyOk = SDCard.copy(documentoTempImg, documentoDestImg);
+        File documentoFronteTempImg = new File(srcPath + TEMP_IMG_DOCUMENTO_FRONTE);
+        File documentoFronteDestImg = new File(destPath + IMG_DOCUMENTO_FRONTE);
+        boolean documentoFronteCopyOk = SDCard.copy(documentoFronteTempImg, documentoFronteDestImg);
         
-        return visoCopyOk && documentoCopyOk;
+        File documentoRetroTempImg = new File(srcPath + TEMP_IMG_DOCUMENTO_RETRO);
+        File documentoRetroDestImg = new File(destPath + IMG_DOCUMENTO_RETRO);
+        boolean documentoRetroCopyOk = SDCard.copy(documentoRetroTempImg, documentoRetroDestImg);
+        
+        File moduloFronteTempImg = new File(srcPath + TEMP_IMG_MODULO_FRONTE);
+        File moduloFronteDestImg = new File(destPath + IMG_MODULO_FRONTE);
+        boolean moduloFronteCopyOk = SDCard.copy(moduloFronteTempImg, moduloFronteDestImg);
+        
+        File moduloRetroTempImg = new File(srcPath + TEMP_IMG_MODULO_RETRO);
+        File moduloRetroDestImg = new File(destPath + IMG_MODULO_RETRO);
+        boolean moduloRetroCopyOk = SDCard.copy(moduloRetroTempImg, moduloRetroDestImg);
+        
+        return visoCopyOk && documentoFronteCopyOk && documentoRetroCopyOk && moduloFronteCopyOk && moduloRetroCopyOk;
     }
     
     private static boolean copy(File src, File dst)
@@ -342,7 +377,7 @@ public class SDCard
             {
                 Log.v("Delete", "Delete operation is failed.");
             }
-            File documentiImg = new File(path + TEMP_IMG_DOCUMENTO);
+            File documentiImg = new File(path + TEMP_IMG_DOCUMENTO_FRONTE);
             if (documentiImg.delete())
             {
                 Log.v("Delete", documentiImg.getName() + " is deleted!");
@@ -409,9 +444,21 @@ public class SDCard
         {
             fileName = fileName + VISO_FILENAME;
         }
-        else if (tipo == DOCUMENTO)
+        else if (tipo == DOCUMENTO_FRONTE)
         {
-            fileName = fileName + DOCUMENTO_FILENAME;
+            fileName = fileName + DOCUMENTO_FRONTE_FILENAME;
+        }
+        else if (tipo == DOCUMENTO_RETRO)
+        {
+            fileName = fileName + DOCUMENTO_RETRO_FILENAME;
+        }
+        else if (tipo == MODULO_FRONTE)
+        {
+            fileName = fileName + MODULO_FRONTE_FILENAME;
+        }
+        else if (tipo == MODULO_RETRO)
+        {
+            fileName = fileName + MODULO_RETRO_FILENAME;
         }
         
         Bitmap bitmap;
@@ -438,9 +485,21 @@ public class SDCard
         {
             fileName = fileName + VISO_FILENAME;
         }
-        else if (tipo == DOCUMENTO)
+        else if (tipo == DOCUMENTO_FRONTE)
         {
-            fileName = fileName + DOCUMENTO_FILENAME;
+            fileName = fileName + DOCUMENTO_FRONTE_FILENAME;
+        }
+        else if (tipo == DOCUMENTO_RETRO)
+        {
+            fileName = fileName + DOCUMENTO_RETRO_FILENAME;
+        }
+        else if (tipo == MODULO_FRONTE)
+        {
+            fileName = fileName + MODULO_FRONTE_FILENAME;
+        }
+        else if (tipo == MODULO_RETRO)
+        {
+            fileName = fileName + MODULO_RETRO_FILENAME;
         }
         
         Bitmap bitmap;
@@ -476,9 +535,21 @@ public class SDCard
         {
             fileName = fileName + TEMP_IMG_VISO;
         }
-        else if (tipo == DOCUMENTO)
+        else if (tipo == DOCUMENTO_FRONTE)
         {
-            fileName = fileName + TEMP_IMG_DOCUMENTO;
+            fileName = fileName + TEMP_IMG_DOCUMENTO_FRONTE;
+        }
+        else if (tipo == DOCUMENTO_RETRO)
+        {
+            fileName = fileName + TEMP_IMG_DOCUMENTO_RETRO;
+        }
+        else if (tipo == MODULO_FRONTE)
+        {
+            fileName = fileName + TEMP_IMG_MODULO_FRONTE;
+        }
+        else if (tipo == MODULO_RETRO)
+        {
+            fileName = fileName + TEMP_IMG_MODULO_RETRO;
         }
         
         Bitmap bitmap;

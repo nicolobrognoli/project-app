@@ -10,7 +10,10 @@
     <string name="text_view_cognome">Cognome:</string>
     <string name="text_view_numero">Numero:</string>
     <string name="text_view_foto_viso">Foto viso:</string>
-    <string name="text_view_foto_documento">Foto documento:</string>
+    <string name="text_view_foto_documento_fronte">Foto documento fronte:</string>
+    <string name="text_view_foto_documento_retro">Foto documento retro:</string>
+    <string name="text_view_foto_modulo_fronte">Foto modulo fronte:</string>
+    <string name="text_view_foto_modulo_retro">Foto modulo retro:</string>
     <string name="button_foto">Seleziona foto</string>
     <string name="button_foto_modifica">Modifica</string>
     <string name="button_modifica">Modifica</string>    

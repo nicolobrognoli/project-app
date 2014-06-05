@@ -42,11 +42,23 @@ public class ClienteDetailFragment extends Fragment
     
     private static final String VISO_BITMAP = "viso_bitmap";
     
-    private static final String DOCUMENTO_BITMAP = "documento_bitmap";
+    private static final String DOCUMENTO_FRONTE_BITMAP = "documento_fronte_bitmap";
+    
+    private static final String DOCUMENTO_RETRO_BITMAP = "documento_retro_bitmap";
+    
+    private static final String MODULO_FRONTE_BITMAP = "modulo_fronte_bitmap";
+    
+    private static final String MODULO_RETRO_BITMAP = "modulo_retro_bitmap";
     
     private static final int FOTO_VISO_REQUEST = 2;
     
-    private static final int FOTO_DOCUMENTO_REQUEST = 3;
+    private static final int FOTO_DOCUMENTO_FRONTE_REQUEST = 3;
+    
+    private static final int FOTO_DOCUMENTO_RETRO_REQUEST = 4;
+    
+    private static final int FOTO_MODULO_FRONTE_REQUEST = 5;
+    
+    private static final int FOTO_MODULO_RETRO_REQUEST = 6;
     
     private static final int GALLERY = 100;
     
@@ -58,7 +70,13 @@ public class ClienteDetailFragment extends Fragment
     
     private Button fotoVisoButton_;
     
-    private Button fotoDocumentoButton_;
+    private Button fotoDocumentoFronteButton_;
+    
+    private Button fotoDocumentoRetroButton_;
+    
+    private Button fotoModuloFronteButton_;
+    
+    private Button fotoModuloRetroButton_;
     
     private EditText nomeText_;
     
@@ -70,19 +88,37 @@ public class ClienteDetailFragment extends Fragment
     
     private boolean fotoVisoAcquisita_ = false;
     
-    private boolean fotoDocumentoAcquisita_ = false;
+    private boolean fotoDocumentoFronteAcquisita_ = false;
+    
+    private boolean fotoDocumentoRetroAcquisita_ = false;
+    
+    private boolean fotoModuloFronteAcquisita_ = false;
+    
+    private boolean fotoModuloRetroAcquisita_ = false;
     
     private boolean isInputEnabled_ = true;
     
     private Bitmap bitmapViso_;
     
-    private Bitmap bitmapDocumento_;
+    private Bitmap bitmapDocumentoFronte_;
+    
+    private Bitmap bitmapDocumentoRetro_;
+    
+    private Bitmap bitmapModuloFronte_;
+    
+    private Bitmap bitmapModuloRetro_;
     
     private ProgressDialog dialogAttesa_;
     
     private boolean loadingViso_ = false;
     
-    private boolean loadingDocumento_ = false;
+    private boolean loadingDocumentoFronte_ = false;
+    
+    private boolean loadingDocumentoRetro_ = false;
+    
+    private boolean loadingModuloFronte_ = false;
+    
+    private boolean loadingModuloRetro_ = false;
     
     private DettaglioCallbacks mDettaglioCallbacks = dettaglioCallbacks;
     
@@ -148,7 +184,7 @@ public class ClienteDetailFragment extends Fragment
                         String numero = numeroText_.getText().toString();
                         Log.v("Input:", "Numero:" + numero);
                         
-                        boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoAcquisita_);
+                        boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoFronteAcquisita_, fotoDocumentoRetroAcquisita_, fotoModuloFronteAcquisita_, fotoModuloRetroAcquisita_);
                         
                         AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
                         String positiveButtonTitle = getResources().getString(R.string.button_ok);
@@ -219,7 +255,7 @@ public class ClienteDetailFragment extends Fragment
                     String numero = numeroText_.getText().toString();
                     Log.v("Input:", "Numero:" + numero);
                     
-                    boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoAcquisita_);
+                    boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoFronteAcquisita_, fotoDocumentoRetroAcquisita_, fotoModuloFronteAcquisita_, fotoModuloRetroAcquisita_);
                     
                     AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
                     String positiveButtonTitle = getResources().getString(R.string.button_ok);
@@ -290,8 +326,8 @@ public class ClienteDetailFragment extends Fragment
             }
         });
         
-        fotoDocumentoButton_ = ((Button) rootView.findViewById(R.id.button_foto_documento));
-        fotoDocumentoButton_.setOnClickListener(new OnClickListener() {
+        fotoDocumentoFronteButton_ = ((Button) rootView.findViewById(R.id.button_foto_documento_fronte));
+        fotoDocumentoFronteButton_.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v)
@@ -305,7 +341,64 @@ public class ClienteDetailFragment extends Fragment
                 
                 SDCard.refreshFileSystem(getActivity());
                 
-                startDialog(FOTO_DOCUMENTO_REQUEST);
+                startDialog(FOTO_DOCUMENTO_FRONTE_REQUEST);
+            }
+        });
+        
+        fotoDocumentoRetroButton_ = ((Button) rootView.findViewById(R.id.button_foto_documento_retro));
+        fotoDocumentoRetroButton_.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v)
+            {
+                String root = Environment.getExternalStorageDirectory().toString() + "/" + SDCard.APPFOLDER;
+                
+                // Creating folders for Image
+                String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
+                File imagesFolder = new File(imageFolderPath);
+                imagesFolder.mkdirs();
+                
+                SDCard.refreshFileSystem(getActivity());
+                
+                startDialog(FOTO_DOCUMENTO_RETRO_REQUEST);
+            }
+        });
+               
+        fotoModuloFronteButton_ = ((Button) rootView.findViewById(R.id.button_foto_modulo_fronte));
+        fotoModuloFronteButton_.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v)
+            {
+                String root = Environment.getExternalStorageDirectory().toString() + "/" + SDCard.APPFOLDER;
+                
+                // Creating folders for Image
+                String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
+                File imagesFolder = new File(imageFolderPath);
+                imagesFolder.mkdirs();
+                
+                SDCard.refreshFileSystem(getActivity());
+                
+                startDialog(FOTO_MODULO_FRONTE_REQUEST);
+            }
+        });
+        
+        fotoModuloRetroButton_ = ((Button) rootView.findViewById(R.id.button_foto_modulo_retro));
+        fotoModuloRetroButton_.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v)
+            {
+                String root = Environment.getExternalStorageDirectory().toString() + "/" + SDCard.APPFOLDER;
+                
+                // Creating folders for Image
+                String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
+                File imagesFolder = new File(imageFolderPath);
+                imagesFolder.mkdirs();
+                
+                SDCard.refreshFileSystem(getActivity());
+                
+                startDialog(FOTO_MODULO_RETRO_REQUEST);
             }
         });
         
@@ -339,18 +432,20 @@ public class ClienteDetailFragment extends Fragment
         if (savedInstanceState != null)
         {
             bitmapViso_ = savedInstanceState.getParcelable(VISO_BITMAP);
-            bitmapDocumento_ = savedInstanceState.getParcelable(DOCUMENTO_BITMAP);
+            bitmapDocumentoFronte_ = savedInstanceState.getParcelable(DOCUMENTO_FRONTE_BITMAP);
             setupImagePreview(VISO_BITMAP);
-            setupImagePreview(DOCUMENTO_BITMAP);
+            setupImagePreview(DOCUMENTO_FRONTE_BITMAP);
         }
         else if (cliente_ != null)
         {
             
             dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
-            loadingDocumento_ = loadingViso_ = true;
-            new LoadImagePreviewFromGallery().execute(VISO_BITMAP);
-            
-            new LoadImagePreviewFromGallery().execute(DOCUMENTO_BITMAP);
+            loadingDocumentoFronte_ = loadingDocumentoRetro_ = loadingModuloFronte_ = loadingModuloRetro_ = loadingViso_ = true;
+            new LoadImagePreviewFromGallery().execute(VISO_BITMAP);            
+            new LoadImagePreviewFromGallery().execute(DOCUMENTO_FRONTE_BITMAP);
+            new LoadImagePreviewFromGallery().execute(DOCUMENTO_RETRO_BITMAP);
+            new LoadImagePreviewFromGallery().execute(MODULO_FRONTE_BITMAP);
+            new LoadImagePreviewFromGallery().execute(MODULO_RETRO_BITMAP);
         }
     }
     
@@ -388,8 +483,17 @@ public class ClienteDetailFragment extends Fragment
                     case FOTO_VISO_REQUEST:
                         this.importImage(data, FOTO_VISO_REQUEST);
                         break;
-                    case FOTO_DOCUMENTO_REQUEST:
-                        this.importImage(data, FOTO_DOCUMENTO_REQUEST);
+                    case FOTO_DOCUMENTO_FRONTE_REQUEST:
+                        this.importImage(data, FOTO_DOCUMENTO_FRONTE_REQUEST);
+                        break;
+                    case FOTO_DOCUMENTO_RETRO_REQUEST:
+                        this.importImage(data, FOTO_DOCUMENTO_RETRO_REQUEST);
+                        break;
+                    case FOTO_MODULO_FRONTE_REQUEST:
+                        this.importImage(data, FOTO_MODULO_FRONTE_REQUEST);
+                        break;
+                    case FOTO_MODULO_RETRO_REQUEST:
+                        this.importImage(data, FOTO_MODULO_RETRO_REQUEST);
                         break;
                     
                     default:
@@ -405,8 +509,17 @@ public class ClienteDetailFragment extends Fragment
                     case FOTO_VISO_REQUEST:
                         this.saveCapturedImage(data, FOTO_VISO_REQUEST);
                         break;
-                    case FOTO_DOCUMENTO_REQUEST:
-                        this.saveCapturedImage(data, FOTO_DOCUMENTO_REQUEST);
+                    case FOTO_DOCUMENTO_FRONTE_REQUEST:
+                        this.saveCapturedImage(data, FOTO_DOCUMENTO_FRONTE_REQUEST);
+                        break;
+                    case FOTO_DOCUMENTO_RETRO_REQUEST:
+                        this.saveCapturedImage(data, FOTO_DOCUMENTO_RETRO_REQUEST);
+                        break;
+                    case FOTO_MODULO_FRONTE_REQUEST:
+                        this.saveCapturedImage(data, FOTO_MODULO_FRONTE_REQUEST);
+                        break;
+                    case FOTO_MODULO_RETRO_REQUEST:
+                        this.saveCapturedImage(data, FOTO_MODULO_RETRO_REQUEST);
                         break;
                     
                     default:
@@ -425,14 +538,34 @@ public class ClienteDetailFragment extends Fragment
             setThumbImageView(imageView, bitmapViso_);
             imageView.setVisibility(View.VISIBLE);
             fotoVisoAcquisita_ = true;
-        }
-        
-        if (imageType == DOCUMENTO_BITMAP && bitmapDocumento_ != null)
+        }        
+        else if (imageType == DOCUMENTO_FRONTE_BITMAP && bitmapDocumentoFronte_ != null)
         {
-            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento);
-            setThumbImageView(imageView, bitmapDocumento_);
+            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento_fronte);
+            setThumbImageView(imageView, bitmapDocumentoFronte_);
             imageView.setVisibility(View.VISIBLE);
-            fotoDocumentoAcquisita_ = true;
+            fotoDocumentoFronteAcquisita_ = true;
+        }
+        else if (imageType == DOCUMENTO_RETRO_BITMAP && bitmapDocumentoRetro_ != null)
+        {
+            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento_retro);
+            setThumbImageView(imageView, bitmapDocumentoRetro_);
+            imageView.setVisibility(View.VISIBLE);
+            fotoDocumentoRetroAcquisita_ = true;
+        }
+        else if (imageType == MODULO_FRONTE_BITMAP && bitmapModuloFronte_ != null)
+        {
+            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_modulo_fronte);
+            setThumbImageView(imageView, bitmapModuloFronte_);
+            imageView.setVisibility(View.VISIBLE);
+            fotoModuloFronteAcquisita_ = true;
+        }
+        else if (imageType == MODULO_RETRO_BITMAP && bitmapModuloRetro_ != null)
+        {
+            ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_modulo_retro);
+            setThumbImageView(imageView, bitmapModuloRetro_);
+            imageView.setVisibility(View.VISIBLE);
+            fotoModuloRetroAcquisita_ = true;
         }
     }
     
@@ -443,9 +576,21 @@ public class ClienteDetailFragment extends Fragment
         {
             type = VISO_BITMAP;
         }
-        else if (imageType == FOTO_DOCUMENTO_REQUEST)
+        else if (imageType == FOTO_DOCUMENTO_FRONTE_REQUEST)
         {
-            type = DOCUMENTO_BITMAP;
+            type = DOCUMENTO_FRONTE_BITMAP;
+        }
+        else if (imageType == FOTO_DOCUMENTO_RETRO_REQUEST)
+        {
+            type = DOCUMENTO_RETRO_BITMAP;
+        }
+        else if (imageType == FOTO_MODULO_FRONTE_REQUEST)
+        {
+            type = MODULO_FRONTE_BITMAP;
+        }
+        else if (imageType == FOTO_MODULO_RETRO_REQUEST)
+        {
+            type = MODULO_RETRO_BITMAP;
         }
         dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
         new LoadImagePreviewFromTemp().execute(type);
@@ -462,9 +607,21 @@ public class ClienteDetailFragment extends Fragment
             {
                 type = VISO_BITMAP;
             }
-            else if (imageType == FOTO_DOCUMENTO_REQUEST)
+            else if (imageType == FOTO_DOCUMENTO_FRONTE_REQUEST)
             {
-                type = DOCUMENTO_BITMAP;
+                type = DOCUMENTO_FRONTE_BITMAP;
+            }
+            else if (imageType == FOTO_DOCUMENTO_RETRO_REQUEST)
+            {
+                type = DOCUMENTO_RETRO_BITMAP;
+            }
+            else if (imageType == FOTO_MODULO_FRONTE_REQUEST)
+            {
+                type = MODULO_FRONTE_BITMAP;
+            }
+            else if (imageType == FOTO_MODULO_RETRO_REQUEST)
+            {
+                type = MODULO_RETRO_BITMAP;
             }
             dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
             new ImportImageFromGallery().execute(type);
@@ -477,14 +634,14 @@ public class ClienteDetailFragment extends Fragment
     
     private void saveTempImage(String tempPath, String imagePathName, Bitmap bitmap, boolean isSalvataggioViso)
     {
-        if (isSalvataggioViso)
-        {
-            fotoVisoAcquisita_ = false;
-        }
-        else
-        {
-            fotoDocumentoAcquisita_ = false;
-        }
+//        if (isSalvataggioViso)
+//        {
+//            fotoVisoAcquisita_ = false;
+//        }
+//        else
+//        {
+//            fotoDocumentoFronteAcquisita_ = false;
+//        }
         try
         {
             File dir = new File(tempPath);
@@ -498,14 +655,14 @@ public class ClienteDetailFragment extends Fragment
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.close();
             Log.v("Salvataggio immagine:", "Saved: " + imagePathName);
-            if (isSalvataggioViso)
-            {
-                fotoVisoAcquisita_ = true;
-            }
-            else
-            {
-                fotoDocumentoAcquisita_ = true;
-            }
+//            if (isSalvataggioViso)
+//            {
+//                fotoVisoAcquisita_ = true;
+//            }
+//            else
+//            {
+//                fotoDocumentoFronteAcquisita_ = true;
+//            }
         }
         catch (Exception e)
         {
@@ -539,8 +696,10 @@ public class ClienteDetailFragment extends Fragment
                 String tempPath = "";
                 if (requestCode == FOTO_VISO_REQUEST)
                     tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_VISO;
-                else if (requestCode == FOTO_DOCUMENTO_REQUEST)
-                    tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_DOCUMENTO;
+                else if (requestCode == FOTO_DOCUMENTO_FRONTE_REQUEST)
+                    tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_DOCUMENTO_FRONTE;
+                else if (requestCode == FOTO_DOCUMENTO_RETRO_REQUEST)
+                    tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_DOCUMENTO_RETRO;
                 File file = new File(tempPath);
                 Uri tempUri = Uri.fromFile(file);
                 pictureActionIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, tempUri);
@@ -550,9 +709,9 @@ public class ClienteDetailFragment extends Fragment
         myAlertDialog.show();
     }
     
-    private boolean chechEmptyFields(String nome, String cognome, String numero, boolean fotoViso, boolean fotoDocumento)
+    private boolean chechEmptyFields(String nome, String cognome, String numero, boolean fotoViso, boolean fotoDocumentoFronte, boolean fotoDocumentoRetro, boolean fotoModuloFronte, boolean fotoModuloRetro)
     {
-        if (fotoViso && fotoDocumento)
+        if (fotoViso && fotoDocumentoFronte && fotoDocumentoRetro && fotoModuloFronte && fotoModuloRetro)
         {
             if (nome != null && nome.length() > 0)
             {
@@ -576,16 +735,25 @@ public class ClienteDetailFragment extends Fragment
         cognomeText_.setEnabled(enable);
         numeroText_.setEnabled(enable);
         fotoVisoButton_.setEnabled(enable);
-        fotoDocumentoButton_.setEnabled(enable);
+        fotoDocumentoFronteButton_.setEnabled(enable);
+        fotoDocumentoRetroButton_.setEnabled(enable);
+        fotoModuloFronteButton_.setEnabled(enable);
+        fotoModuloRetroButton_.setEnabled(enable);
         if (enable)
         {
             fotoVisoButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
-            fotoDocumentoButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
+            fotoDocumentoFronteButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
+            fotoDocumentoRetroButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
+            fotoModuloFronteButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
+            fotoModuloRetroButton_.setTextColor(getResources().getColor(R.color.ti_deep_green));
         }
         else
         {
             fotoVisoButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
-            fotoDocumentoButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
+            fotoDocumentoFronteButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
+            fotoDocumentoRetroButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
+            fotoModuloFronteButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
+            fotoModuloRetroButton_.setTextColor(getResources().getColor(R.color.ti_light_gray));
         }
     }
     
@@ -594,7 +762,10 @@ public class ClienteDetailFragment extends Fragment
     {
         super.onSaveInstanceState(state);
         state.putParcelable(VISO_BITMAP, bitmapViso_);
-        state.putParcelable(DOCUMENTO_BITMAP, bitmapDocumento_);
+        state.putParcelable(DOCUMENTO_FRONTE_BITMAP, bitmapDocumentoFronte_);
+        state.putParcelable(DOCUMENTO_RETRO_BITMAP, bitmapDocumentoRetro_);
+        state.putParcelable(MODULO_FRONTE_BITMAP, bitmapModuloFronte_);
+        state.putParcelable(MODULO_RETRO_BITMAP, bitmapModuloRetro_);
     }
     
     private class LoadImagePreviewFromGallery extends AsyncTask<String, Void, String>
@@ -608,10 +779,21 @@ public class ClienteDetailFragment extends Fragment
             {
                 bitmapViso_ = SDCard.getPreviewImage(cliente_, SDCard.VISO);
             }
-            
-            if (imageType == DOCUMENTO_BITMAP)
+            else if (imageType == DOCUMENTO_FRONTE_BITMAP)
             {
-                bitmapDocumento_ = SDCard.getPreviewImage(cliente_, SDCard.DOCUMENTO);
+                bitmapDocumentoFronte_ = SDCard.getPreviewImage(cliente_, SDCard.DOCUMENTO_FRONTE);
+            }
+            else if (imageType == DOCUMENTO_RETRO_BITMAP)
+            {
+                bitmapDocumentoRetro_ = SDCard.getPreviewImage(cliente_, SDCard.DOCUMENTO_RETRO);
+            }
+            else if (imageType == MODULO_FRONTE_BITMAP)
+            {
+                bitmapModuloFronte_ = SDCard.getPreviewImage(cliente_, SDCard.MODULO_FRONTE);
+            }
+            else if (imageType == MODULO_RETRO_BITMAP)
+            {
+                bitmapModuloRetro_ = SDCard.getPreviewImage(cliente_, SDCard.MODULO_RETRO);
             }
             
             return imageType;
@@ -622,14 +804,26 @@ public class ClienteDetailFragment extends Fragment
         {
             if (result == VISO_BITMAP)
             {
-                loadingViso_ = false;                
+                loadingViso_ = false;
+            }
+            else if (result == DOCUMENTO_FRONTE_BITMAP)
+            {
+                loadingDocumentoFronte_ = false;
+            }
+            else if (result == DOCUMENTO_RETRO_BITMAP)
+            {
+                loadingDocumentoRetro_ = false;
+            }
+            else if (result == MODULO_FRONTE_BITMAP)
+            {
+                loadingModuloFronte_ = false;
+            }
+            else if (result == MODULO_RETRO_BITMAP)
+            {
+                loadingModuloRetro_ = false;
             }
             
-            if (result == DOCUMENTO_BITMAP)
-            {
-                loadingDocumento_ = false;                
-            }
-            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+            if (dialogAttesa_ != null)
                 dialogAttesa_.dismiss();
             setupImagePreview(result);
         }
@@ -656,10 +850,21 @@ public class ClienteDetailFragment extends Fragment
             {
                 bitmapViso_ = SDCard.getPreviewImageTemp(SDCard.VISO);
             }
-            
-            if (imageType == DOCUMENTO_BITMAP)
+            else if (imageType == DOCUMENTO_FRONTE_BITMAP)
             {
-                bitmapDocumento_ = SDCard.getPreviewImageTemp(SDCard.DOCUMENTO);
+                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.DOCUMENTO_FRONTE);
+            }
+            else if (imageType == DOCUMENTO_RETRO_BITMAP)
+            {
+                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.DOCUMENTO_RETRO);
+            }
+            else if (imageType == MODULO_FRONTE_BITMAP)
+            {
+                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.MODULO_FRONTE);
+            }
+            else if (imageType == MODULO_RETRO_BITMAP)
+            {
+                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.MODULO_RETRO);
             }
             
             return imageType;
@@ -673,13 +878,28 @@ public class ClienteDetailFragment extends Fragment
                 loadingViso_ = false;
                 fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
-            
-            if (result == DOCUMENTO_BITMAP)
+            else if (result == DOCUMENTO_FRONTE_BITMAP)
             {
-                loadingDocumento_ = false;
-                fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+                loadingDocumentoFronte_ = false;
+                fotoDocumentoFronteButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
-            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+            else if (result == DOCUMENTO_RETRO_BITMAP)
+            {
+                loadingDocumentoRetro_ = false;
+                fotoDocumentoRetroButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            }
+            else if (result == MODULO_FRONTE_BITMAP)
+            {
+                loadingModuloFronte_ = false;
+                fotoModuloFronteButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            }
+            else if (result == MODULO_RETRO_BITMAP)
+            {
+                loadingModuloRetro_ = false;
+                fotoModuloRetroButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            }
+            
+            if (dialogAttesa_ != null)
                 dialogAttesa_.dismiss();
             setupImagePreview(result);
         }
@@ -719,9 +939,21 @@ public class ClienteDetailFragment extends Fragment
                     {
                         bitmapViso_ = bitmap;
                     }
-                    else if (imageType == DOCUMENTO_BITMAP)
+                    else if (imageType == DOCUMENTO_FRONTE_BITMAP)
                     {
-                        bitmapDocumento_ = bitmap;
+                        bitmapDocumentoFronte_ = bitmap;
+                    }
+                    else if (imageType == DOCUMENTO_RETRO_BITMAP)
+                    {
+                        bitmapDocumentoRetro_ = bitmap;
+                    }
+                    else if (imageType == MODULO_FRONTE_BITMAP)
+                    {
+                        bitmapModuloFronte_ = bitmap;
+                    }
+                    else if (imageType == MODULO_RETRO_BITMAP)
+                    {
+                        bitmapModuloRetro_ = bitmap;
                     }
                 }
                 else
@@ -732,9 +964,21 @@ public class ClienteDetailFragment extends Fragment
                     {
                         bitmapViso_ = bmpDrawable.getBitmap();
                     }
-                    else if (imageType == DOCUMENTO_BITMAP)
+                    else if (imageType == DOCUMENTO_FRONTE_BITMAP)
                     {
-                        bitmapDocumento_ = bmpDrawable.getBitmap();
+                        bitmapDocumentoFronte_ = bmpDrawable.getBitmap();
+                    }
+                    else if (imageType == DOCUMENTO_RETRO_BITMAP)
+                    {
+                        bitmapDocumentoRetro_ = bmpDrawable.getBitmap();
+                    }
+                    else if (imageType == MODULO_FRONTE_BITMAP)
+                    {
+                        bitmapModuloFronte_ = bmpDrawable.getBitmap();;
+                    }
+                    else if (imageType == MODULO_RETRO_BITMAP)
+                    {
+                        bitmapModuloRetro_ = bmpDrawable.getBitmap();
                     }
                 }
             }
@@ -748,21 +992,29 @@ public class ClienteDetailFragment extends Fragment
             if (result == VISO_BITMAP)
             {
                 loadingViso_ = false;
-            }
-            
-            if (result == DOCUMENTO_BITMAP)
-            {
-                loadingDocumento_ = false;
-            }
-            
-            if (result == VISO_BITMAP)
-            {
                 fotoVisoButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
-            else if (result == DOCUMENTO_BITMAP)
+            else if (result == DOCUMENTO_FRONTE_BITMAP)
             {
-                fotoDocumentoButton_.setText(getResources().getString(R.string.button_foto_modifica));
+                loadingDocumentoFronte_ = false;
+                fotoDocumentoFronteButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
+            else if (result == DOCUMENTO_RETRO_BITMAP)
+            {
+                loadingDocumentoRetro_ = false;
+                fotoDocumentoRetroButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            }
+            else if (result == MODULO_FRONTE_BITMAP)
+            {
+                loadingModuloFronte_ = false;
+                fotoModuloFronteButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            }
+            else if (result == MODULO_RETRO_BITMAP)
+            {
+                loadingModuloRetro_ = false;
+                fotoModuloRetroButton_.setText(getResources().getString(R.string.button_foto_modifica));
+            }
+            
             new SaveTempImageFromGallery().execute(result);
             setupImagePreview(result);
         }
@@ -796,14 +1048,33 @@ public class ClienteDetailFragment extends Fragment
                 bitmap = bitmapViso_;
                 loadingViso_ = false;
             }
-            else if (imageType == DOCUMENTO_BITMAP)
+            else if (imageType == DOCUMENTO_FRONTE_BITMAP)
             {
-                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO;
-                bitmap = bitmapDocumento_;
-                loadingDocumento_ = false;
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO_FRONTE;
+                bitmap = bitmapDocumentoFronte_;
+                loadingDocumentoFronte_ = false;
             }
+            else if (imageType == DOCUMENTO_RETRO_BITMAP)
+            {
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_DOCUMENTO_RETRO;
+                bitmap = bitmapDocumentoRetro_;
+                loadingDocumentoRetro_ = false;
+            }
+            else if (imageType == MODULO_FRONTE_BITMAP)
+            {
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_MODULO_FRONTE;
+                bitmap = bitmapModuloFronte_;
+                loadingModuloFronte_ = false;
+            }
+            else if (imageType == MODULO_RETRO_BITMAP)
+            {
+                imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_MODULO_RETRO;
+                bitmap = bitmapModuloRetro_;
+                loadingModuloRetro_ = false;
+            }            
+            
             saveTempImage(tempPath, imagePathName, bitmap, imageType == VISO_BITMAP);
-            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+            if (dialogAttesa_ != null)
                 dialogAttesa_.dismiss();
             
             return imageType;
@@ -816,12 +1087,24 @@ public class ClienteDetailFragment extends Fragment
             {
                 loadingViso_ = false;
             }
-            
-            if (result == DOCUMENTO_BITMAP)
+            else if (result == DOCUMENTO_FRONTE_BITMAP)
             {
-                loadingDocumento_ = false;
+                loadingDocumentoFronte_ = false;
             }
-            if (dialogAttesa_ != null && !loadingDocumento_ && !loadingViso_)
+            else if (result == DOCUMENTO_RETRO_BITMAP)
+            {
+                loadingDocumentoRetro_ = false;
+            }
+            else if (result == MODULO_FRONTE_BITMAP)
+            {
+                loadingModuloFronte_ = false;
+            }
+            else if (result == MODULO_RETRO_BITMAP)
+            {
+                loadingModuloRetro_ = false;
+            }
+            
+            if (dialogAttesa_ != null)
                 dialogAttesa_.dismiss();
         }
         
