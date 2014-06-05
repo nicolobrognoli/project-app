@@ -768,6 +768,12 @@ public class ClienteDetailFragment extends Fragment
         state.putParcelable(MODULO_RETRO_BITMAP, bitmapModuloRetro_);
     }
     
+    private void dismissDialogAttesa()
+    {
+        if (dialogAttesa_ != null && !loadingViso_ && !loadingDocumentoFronte_ && !loadingDocumentoRetro_ && !loadingModuloFronte_ && !loadingModuloRetro_)
+            dialogAttesa_.dismiss();
+    }
+    
     private class LoadImagePreviewFromGallery extends AsyncTask<String, Void, String>
     {
         @Override
@@ -823,8 +829,7 @@ public class ClienteDetailFragment extends Fragment
                 loadingModuloRetro_ = false;
             }
             
-            if (dialogAttesa_ != null)
-                dialogAttesa_.dismiss();
+            dismissDialogAttesa();
             setupImagePreview(result);
         }
         
@@ -899,8 +904,7 @@ public class ClienteDetailFragment extends Fragment
                 fotoModuloRetroButton_.setText(getResources().getString(R.string.button_foto_modifica));
             }
             
-            if (dialogAttesa_ != null)
-                dialogAttesa_.dismiss();
+            dismissDialogAttesa();
             setupImagePreview(result);
         }
         
@@ -1074,8 +1078,7 @@ public class ClienteDetailFragment extends Fragment
             }            
             
             saveTempImage(tempPath, imagePathName, bitmap, imageType == VISO_BITMAP);
-            if (dialogAttesa_ != null)
-                dialogAttesa_.dismiss();
+            dismissDialogAttesa();
             
             return imageType;
         }
@@ -1104,8 +1107,7 @@ public class ClienteDetailFragment extends Fragment
                 loadingModuloRetro_ = false;
             }
             
-            if (dialogAttesa_ != null)
-                dialogAttesa_.dismiss();
+            dismissDialogAttesa();
         }
         
         @Override

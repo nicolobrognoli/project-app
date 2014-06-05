@@ -1,267 +1,271 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@color/white" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" 
+    	android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/layout_nome"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/detail_element_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" >
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_nome" />
-
-        <EditText
-            android:id="@+id/edit_text_nome"
-            android:layout_width="@dimen/detail_edit_text_width"
+        <LinearLayout
+            android:id="@+id/layout_nome"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/detail_element_height"
-            android:inputType="textCapSentences" >
-        </EditText>
-    </LinearLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/layout_cognome"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/detail_element_height"
-        android:layout_below="@+id/layout_nome"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_nome" />
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_cognome" />
+            <EditText
+                android:id="@+id/edit_text_nome"
+                android:layout_width="@dimen/detail_edit_text_width"
+                android:layout_height="@dimen/detail_element_height"
+                android:inputType="textCapSentences" >
+            </EditText>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/edit_text_cognome"
-            android:layout_width="@dimen/detail_edit_text_width"
+        <LinearLayout
+            android:id="@+id/layout_cognome"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/detail_element_height"
-            android:inputType="textCapSentences" >
-        </EditText>
-    </LinearLayout>
+            android:layout_below="@+id/layout_nome"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/layout_numero"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/detail_element_height"
-        android:layout_below="@+id/layout_cognome"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_cognome" />
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_numero" />
+            <EditText
+                android:id="@+id/edit_text_cognome"
+                android:layout_width="@dimen/detail_edit_text_width"
+                android:layout_height="@dimen/detail_element_height"
+                android:inputType="textCapSentences" >
+            </EditText>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/edit_text_numero"
-            android:layout_width="@dimen/detail_edit_text_width"
+        <LinearLayout
+            android:id="@+id/layout_numero"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/detail_element_height"
-            android:inputType="number" >
-        </EditText>
-    </LinearLayout>
+            android:layout_below="@+id/layout_cognome"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/layout_foto_viso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/layout_numero"
-        android:layout_below="@+id/layout_numero"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_numero" />
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_viso" />
+            <EditText
+                android:id="@+id/edit_text_numero"
+                android:layout_width="@dimen/detail_edit_text_width"
+                android:layout_height="@dimen/detail_element_height"
+                android:inputType="number" >
+            </EditText>
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageview_foto_viso"
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_width"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/content_description"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/button_foto_viso"
+        <LinearLayout
+            android:id="@+id/layout_foto_viso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/greenbutton_big"
-            android:text="@string/button_foto"
-            android:textColor="@color/ti_deep_green"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_alignLeft="@+id/layout_numero"
+            android:layout_below="@+id/layout_numero"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/layout_foto_documento_fronte"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/layout_numero"
-        android:layout_below="@+id/layout_foto_viso"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_foto_viso" />
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_documento_fronte" />
+            <ImageView
+                android:id="@+id/imageview_foto_viso"
+                android:layout_width="@dimen/img_width"
+                android:layout_height="@dimen/img_width"
+                android:layout_marginRight="20dp"
+                android:contentDescription="@string/content_description"
+                android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/imageview_foto_documento_fronte"
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_width"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/content_description"
-            android:visibility="gone" />
+            <Button
+                android:id="@+id/button_foto_viso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/greenbutton_big"
+                android:text="@string/button_foto"
+                android:textColor="@color/ti_deep_green"
+                android:textSize="16sp" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/button_foto_documento_fronte"
+        <LinearLayout
+            android:id="@+id/layout_foto_documento_fronte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/greenbutton_big"
-            android:text="@string/button_foto"
-            android:textColor="@color/ti_deep_green"
-            android:textSize="16sp" />
-    </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/layout_foto_documento_retro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/layout_numero"
-        android:layout_below="@+id/layout_foto_documento_fronte"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+            android:layout_alignLeft="@+id/layout_numero"
+            android:layout_below="@+id/layout_foto_viso"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_documento_retro" />
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_foto_documento_fronte" />
 
-        <ImageView
-            android:id="@+id/imageview_foto_documento_retro"
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_width"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/content_description"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/imageview_foto_documento_fronte"
+                android:layout_width="@dimen/img_width"
+                android:layout_height="@dimen/img_width"
+                android:layout_marginRight="20dp"
+                android:contentDescription="@string/content_description"
+                android:visibility="gone" />
 
-        <Button
-            android:id="@+id/button_foto_documento_retro"
+            <Button
+                android:id="@+id/button_foto_documento_fronte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/greenbutton_big"
+                android:text="@string/button_foto"
+                android:textColor="@color/ti_deep_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_foto_documento_retro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/greenbutton_big"
-            android:text="@string/button_foto"
-            android:textColor="@color/ti_deep_green"
-            android:textSize="16sp" />
-    </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/layout_foto_modulo_fronte"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/layout_numero"
-        android:layout_below="@+id/layout_foto_documento_retro"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+            android:layout_alignLeft="@+id/layout_numero"
+            android:layout_below="@+id/layout_foto_documento_fronte"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_modulo_fronte" />
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_foto_documento_retro" />
 
-        <ImageView
-            android:id="@+id/imageview_foto_modulo_fronte"
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_width"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/content_description"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/imageview_foto_documento_retro"
+                android:layout_width="@dimen/img_width"
+                android:layout_height="@dimen/img_width"
+                android:layout_marginRight="20dp"
+                android:contentDescription="@string/content_description"
+                android:visibility="gone" />
 
-        <Button
-            android:id="@+id/button_foto_modulo_fronte"
+            <Button
+                android:id="@+id/button_foto_documento_retro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/greenbutton_big"
+                android:text="@string/button_foto"
+                android:textColor="@color/ti_deep_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_foto_modulo_fronte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/greenbutton_big"
-            android:text="@string/button_foto"
-            android:textColor="@color/ti_deep_green"
-            android:textSize="16sp" />
-    </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/layout_foto_modulo_retro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/layout_numero"
-        android:layout_below="@+id/layout_foto_modulo_fronte"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
+            android:layout_alignLeft="@+id/layout_numero"
+            android:layout_below="@+id/layout_foto_documento_retro"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-        <TextView
-            style="@style/FormLabelStyle"
-            android:layout_width="@dimen/detail_label_width"
-            android:layout_height="wrap_content"
-            android:text="@string/text_view_foto_modulo_retro" />
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_foto_modulo_fronte" />
 
-        <ImageView
-            android:id="@+id/imageview_foto_modulo_retro"
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_width"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/content_description"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/imageview_foto_modulo_fronte"
+                android:layout_width="@dimen/img_width"
+                android:layout_height="@dimen/img_width"
+                android:layout_marginRight="20dp"
+                android:contentDescription="@string/content_description"
+                android:visibility="gone" />
 
-        <Button
-            android:id="@+id/button_foto_modulo_retro"
+            <Button
+                android:id="@+id/button_foto_modulo_fronte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/greenbutton_big"
+                android:text="@string/button_foto"
+                android:textColor="@color/ti_deep_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_foto_modulo_retro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/greenbutton_big"
-            android:text="@string/button_foto"
-            android:textColor="@color/ti_deep_green"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_alignLeft="@+id/layout_numero"
+            android:layout_below="@+id/layout_foto_modulo_fronte"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/button_salva"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:background="@drawable/redbutton"
-        android:text="@string/button_salva"
-        android:textColor="@color/ti_red"
-        android:textSize="18sp" />
+            <TextView
+                style="@style/FormLabelStyle"
+                android:layout_width="@dimen/detail_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_foto_modulo_retro" />
 
-    <Button
-        android:id="@+id/button_modifica"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:background="@drawable/redbutton"
-        android:text="@string/button_modifica"
-        android:textColor="@color/ti_red"
-        android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/imageview_foto_modulo_retro"
+                android:layout_width="@dimen/img_width"
+                android:layout_height="@dimen/img_width"
+                android:layout_marginRight="20dp"
+                android:contentDescription="@string/content_description"
+                android:visibility="gone" />
 
-</RelativeLayout>
+            <Button
+                android:id="@+id/button_foto_modulo_retro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/greenbutton_big"
+                android:text="@string/button_foto"
+                android:textColor="@color/ti_deep_green"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_salva"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:background="@drawable/redbutton"
+            android:text="@string/button_salva"
+            android:textColor="@color/ti_red"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/button_modifica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/item_margin_top"
+            android:background="@drawable/redbutton"
+            android:text="@string/button_modifica"
+            android:textColor="@color/ti_red"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</ScrollView>
