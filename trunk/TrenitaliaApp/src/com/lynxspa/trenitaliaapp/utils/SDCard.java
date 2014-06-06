@@ -377,16 +377,42 @@ public class SDCard
             {
                 Log.v("Delete", "Delete operation is failed.");
             }
-            File documentiImg = new File(path + TEMP_IMG_DOCUMENTO_FRONTE);
-            if (documentiImg.delete())
+            File documentoFronteImg = new File(path + TEMP_IMG_DOCUMENTO_FRONTE);
+            if (documentoFronteImg.delete())
             {
-                Log.v("Delete", documentiImg.getName() + " is deleted!");
+                Log.v("Delete", documentoFronteImg.getName() + " is deleted!");
             }
             else
             {
                 Log.v("Delete", "Delete operation is failed.");
             }
-            
+            File documentoRetroImg = new File(path + TEMP_IMG_DOCUMENTO_RETRO);
+            if (documentoRetroImg.delete())
+            {
+                Log.v("Delete", documentoRetroImg.getName() + " is deleted!");
+            }
+            else
+            {
+                Log.v("Delete", "Delete operation is failed.");
+            }
+            File moduloFronteImg = new File(path + TEMP_IMG_MODULO_FRONTE);
+            if (moduloFronteImg.delete())
+            {
+                Log.v("Delete", moduloFronteImg.getName() + " is deleted!");
+            }
+            else
+            {
+                Log.v("Delete", "Delete operation is failed.");
+            }
+            File moduloRetroImg = new File(path + TEMP_IMG_MODULO_RETRO);
+            if (moduloRetroImg.delete())
+            {
+                Log.v("Delete", moduloRetroImg.getName() + " is deleted!");
+            }
+            else
+            {
+                Log.v("Delete", "Delete operation is failed.");
+            }
         }
         catch (Exception e)
         {

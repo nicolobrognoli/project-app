@@ -435,6 +435,9 @@ public class ClienteDetailFragment extends Fragment
             bitmapDocumentoFronte_ = savedInstanceState.getParcelable(DOCUMENTO_FRONTE_BITMAP);
             setupImagePreview(VISO_BITMAP);
             setupImagePreview(DOCUMENTO_FRONTE_BITMAP);
+            setupImagePreview(DOCUMENTO_RETRO_BITMAP);
+            setupImagePreview(MODULO_FRONTE_BITMAP);
+            setupImagePreview(MODULO_RETRO_BITMAP);
         }
         else if (cliente_ != null)
         {
@@ -700,6 +703,10 @@ public class ClienteDetailFragment extends Fragment
                     tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_DOCUMENTO_FRONTE;
                 else if (requestCode == FOTO_DOCUMENTO_RETRO_REQUEST)
                     tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_DOCUMENTO_RETRO;
+                else if (requestCode == FOTO_MODULO_FRONTE_REQUEST)
+                    tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_MODULO_FRONTE;
+                else if (requestCode == FOTO_MODULO_RETRO_REQUEST)
+                    tempPath = root + SDCard.TEMP_IMG_PATH + "/" + SDCard.TEMP_IMG_MODULO_RETRO;
                 File file = new File(tempPath);
                 Uri tempUri = Uri.fromFile(file);
                 pictureActionIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, tempUri);
@@ -861,15 +868,15 @@ public class ClienteDetailFragment extends Fragment
             }
             else if (imageType == DOCUMENTO_RETRO_BITMAP)
             {
-                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.DOCUMENTO_RETRO);
+                bitmapDocumentoRetro_ = SDCard.getPreviewImageTemp(SDCard.DOCUMENTO_RETRO);
             }
             else if (imageType == MODULO_FRONTE_BITMAP)
             {
-                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.MODULO_FRONTE);
+                bitmapModuloFronte_ = SDCard.getPreviewImageTemp(SDCard.MODULO_FRONTE);
             }
             else if (imageType == MODULO_RETRO_BITMAP)
             {
-                bitmapDocumentoFronte_ = SDCard.getPreviewImageTemp(SDCard.MODULO_RETRO);
+                bitmapModuloRetro_ = SDCard.getPreviewImageTemp(SDCard.MODULO_RETRO);
             }
             
             return imageType;
