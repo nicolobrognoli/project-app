@@ -3,6 +3,7 @@ package com.lynxspa.trenitaliaapp;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.lynxspa.trenitaliaapp.utils.SDCard;
 import com.lynxspa.trenitaliaapp.utils.ClientAdapter.AdapterCallback;
 
 public class ClienteListActivity extends FragmentActivity implements ClienteListFragment.Callbacks, ClienteDetailFragment.DettaglioCallbacks, AdapterCallback
@@ -37,6 +38,7 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
     @Override
     public void newItemInsert()
     {
+        SDCard.refreshFileSystem(this);
         ClienteDetailFragment fragment = new ClienteDetailFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.cliente_detail_container, fragment).commit();
     }
@@ -44,6 +46,7 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
     @Override
     public void onStateChanged()
     {
+        SDCard.refreshFileSystem(this);
         ClienteListFragment fragmentSx = new ClienteListFragment();
         getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
     }
@@ -51,6 +54,7 @@ public class ClienteListActivity extends FragmentActivity implements ClienteList
     @Override
     public void onDelete(int position)
     {
+        SDCard.refreshFileSystem(this);
         ClienteListFragment fragmentSx = new ClienteListFragment();
         getFragmentManager().beginTransaction().replace(R.id.cliente_list, fragmentSx).commit();
     }
