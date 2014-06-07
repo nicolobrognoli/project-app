@@ -147,7 +147,6 @@ public class SDCard
             e.printStackTrace();
             return FAIL;
         }
-//        refreshFileSystem(activity);
         return SUCCESS;
     }
     
