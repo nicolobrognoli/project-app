@@ -98,6 +98,8 @@ public class ClienteDetailFragment extends Fragment
     
     private boolean isInputEnabled_ = true;
     
+    private boolean isModifica_ = false;
+    
     private Bitmap bitmapViso_;
     
     private Bitmap bitmapDocumentoFronte_;
@@ -119,6 +121,8 @@ public class ClienteDetailFragment extends Fragment
     private boolean loadingModuloFronte_ = false;
     
     private boolean loadingModuloRetro_ = false;
+    
+    private String createUserFileOk_;
     
     private DettaglioCallbacks mDettaglioCallbacks = dettaglioCallbacks;
     
@@ -186,17 +190,10 @@ public class ClienteDetailFragment extends Fragment
                         
                         boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoFronteAcquisita_, fotoDocumentoRetroAcquisita_, fotoModuloFronteAcquisita_, fotoModuloRetroAcquisita_);
                         
-                        AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
-                        String positiveButtonTitle = getResources().getString(R.string.button_ok);
-                        esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1)
-                            {
-                                // do nothing
-                            }
-                        });
-                        
                         if (noEmpty)
                         {
+                            dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
+                            
                             User newUser = new User();
                             newUser.setNome(nome);
                             newUser.setCognome(cognome);
@@ -206,28 +203,25 @@ public class ClienteDetailFragment extends Fragment
                             newUser.setCreation(cliente_.getCreation());
                             newUser.setUpdate(formatter.format(new Date()));
                             
-                            String createUserFileOk = SDCard.updateUser(cliente_, newUser, getActivity());
-                            SDCard.moveTempImages(numero);
-                            if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS))
-                            {
-                                esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
-                                mDettaglioCallbacks.onStateChanged();
-                            }
-                            else if (createUserFileOk.equalsIgnoreCase(SDCard.DIR_ESISTENTE))
-                            {
-                                esitoDialog.setMessage(getResources().getString(R.string.dialog_dir_exist_text));
-                            }
-                            else
-                            {
-                                esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
-                            }
+                            SDCard.updateUser(cliente_, newUser, getActivity());
+                            createUserFileOk_ = SDCard.SUCCESS;
+                            isModifica_ = true;
+                            new MoveTempImages().execute(numero);
                         }
                         else
                         {
+                            AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
+                            String positiveButtonTitle = getResources().getString(R.string.button_ok);
+                            esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1)
+                                {
+                                    // do nothing
+                                }
+                            });
                             esitoDialog.setTitle(getResources().getString(R.string.dialog_vuoti_title));
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_vuoti_text));
+                            esitoDialog.show();
                         }
-                        esitoDialog.show();
                     }
                     else
                     {
@@ -257,17 +251,10 @@ public class ClienteDetailFragment extends Fragment
                     
                     boolean noEmpty = chechEmptyFields(nome, cognome, numero, fotoVisoAcquisita_, fotoDocumentoFronteAcquisita_, fotoDocumentoRetroAcquisita_, fotoModuloFronteAcquisita_, fotoModuloRetroAcquisita_);
                     
-                    AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
-                    String positiveButtonTitle = getResources().getString(R.string.button_ok);
-                    esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1)
-                        {
-                            mDettaglioCallbacks.onStateChanged();
-                        }
-                    });
-                    
                     if (noEmpty)
                     {
+                        dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
+                        
                         User user = new User();
                         user.setNome(nome);
                         user.setCognome(cognome);
@@ -277,29 +264,26 @@ public class ClienteDetailFragment extends Fragment
                         user.setCreation(formatter.format(new Date()));
                         user.setUpdate(formatter.format(new Date()));
                         
-                        String createUserFileOk = SDCard.writeToSDFile(user, false, getActivity());
-                        boolean moveImagesOk = false;
-                        if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS))
-                            moveImagesOk = SDCard.moveTempImages(numero);
-                        if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS) && moveImagesOk)
+                        createUserFileOk_ = SDCard.writeToSDFile(user, false, getActivity());
+                        if (createUserFileOk_.equalsIgnoreCase(SDCard.SUCCESS))
                         {
-                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));                            
-                        }
-                        else if (createUserFileOk.equalsIgnoreCase(SDCard.DIR_ESISTENTE))
-                        {
-                            esitoDialog.setMessage(getResources().getString(R.string.dialog_dir_exist_text));
-                        }
-                        else
-                        {
-                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
-                        }
+                            isModifica_ = false;
+                            new MoveTempImages().execute(numero);
+                        }                            
                     }
                     else
                     {
+                        AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
+                        String positiveButtonTitle = getResources().getString(R.string.button_ok);
+                        esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1)
+                            {
+                            }
+                        });
                         esitoDialog.setTitle(getResources().getString(R.string.dialog_vuoti_title));
                         esitoDialog.setMessage(getResources().getString(R.string.dialog_vuoti_text));
+                        esitoDialog.show();
                     }
-                    esitoDialog.show();
                 }
             }
         });
@@ -317,8 +301,6 @@ public class ClienteDetailFragment extends Fragment
                 File imagesFolder = new File(imageFolderPath);
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
-                
-//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_VISO_REQUEST);
             }
@@ -338,8 +320,6 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-//                SDCard.refreshFileSystem(getActivity());
-                
                 startDialog(FOTO_DOCUMENTO_FRONTE_REQUEST);
             }
         });
@@ -357,8 +337,6 @@ public class ClienteDetailFragment extends Fragment
                 File imagesFolder = new File(imageFolderPath);
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
-                
-//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_DOCUMENTO_RETRO_REQUEST);
             }
@@ -378,8 +356,6 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-//                SDCard.refreshFileSystem(getActivity());
-                
                 startDialog(FOTO_MODULO_FRONTE_REQUEST);
             }
         });
@@ -397,8 +373,6 @@ public class ClienteDetailFragment extends Fragment
                 File imagesFolder = new File(imageFolderPath);
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
-                
-//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_MODULO_RETRO_REQUEST);
             }
@@ -639,35 +613,18 @@ public class ClienteDetailFragment extends Fragment
     
     private void saveTempImage(String tempPath, String imagePathName, Bitmap bitmap, boolean isSalvataggioViso)
     {
-        // if (isSalvataggioViso)
-        // {
-        // fotoVisoAcquisita_ = false;
-        // }
-        // else
-        // {
-        // fotoDocumentoFronteAcquisita_ = false;
-        // }
         try
         {
             File dir = new File(tempPath);
             if (!dir.exists())
             {
                 dir.mkdirs();
-//                SDCard.refreshFileSystem(getActivity());
             }
             
             FileOutputStream out = new FileOutputStream(imagePathName);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.close();
             Log.v("Salvataggio immagine:", "Saved: " + imagePathName);
-            // if (isSalvataggioViso)
-            // {
-            // fotoVisoAcquisita_ = true;
-            // }
-            // else
-            // {
-            // fotoDocumentoFronteAcquisita_ = true;
-            // }
         }
         catch (Exception e)
         {
@@ -1118,6 +1075,55 @@ public class ClienteDetailFragment extends Fragment
             }
             
             dismissDialogAttesa();
+        }
+        
+        @Override
+        protected void onPreExecute()
+        {
+        }
+        
+        @Override
+        protected void onProgressUpdate(Void... values)
+        {
+        }
+    }
+    
+    private class MoveTempImages extends AsyncTask<String, Void, Boolean>
+    {
+        @Override
+        protected Boolean doInBackground(String... params)
+        {
+            String numero = params[0];
+            return SDCard.moveTempImages(numero);
+            
+        }
+        
+        @Override
+        protected void onPostExecute(Boolean moveImagesOk)
+        {
+            AlertDialog.Builder esitoDialog = new AlertDialog.Builder(getActivity());
+            String positiveButtonTitle = getResources().getString(R.string.button_ok);
+            esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1)
+                {
+                    mDettaglioCallbacks.onStateChanged();
+                }
+            });
+            if (createUserFileOk_.equalsIgnoreCase(SDCard.SUCCESS) && (moveImagesOk || isModifica_))
+            {
+                esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
+            }
+            else if (createUserFileOk_.equalsIgnoreCase(SDCard.DIR_ESISTENTE))
+            {
+                esitoDialog.setMessage(getResources().getString(R.string.dialog_dir_exist_text));
+            }
+            else
+            {
+                esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
+            }
+            if (dialogAttesa_ != null)
+                dialogAttesa_.dismiss();
+            esitoDialog.show();
         }
         
         @Override
