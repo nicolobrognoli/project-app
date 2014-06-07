@@ -262,7 +262,7 @@ public class ClienteDetailFragment extends Fragment
                     esitoDialog.setPositiveButton(positiveButtonTitle, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1)
                         {
-                            // do nothing
+                            mDettaglioCallbacks.onStateChanged();
                         }
                     });
                     
@@ -283,18 +283,15 @@ public class ClienteDetailFragment extends Fragment
                             moveImagesOk = SDCard.moveTempImages(numero);
                         if (createUserFileOk.equalsIgnoreCase(SDCard.SUCCESS) && moveImagesOk)
                         {
-                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));
-                            mDettaglioCallbacks.onStateChanged();
+                            esitoDialog.setMessage(getResources().getString(R.string.dialog_ok_text));                            
                         }
                         else if (createUserFileOk.equalsIgnoreCase(SDCard.DIR_ESISTENTE))
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_dir_exist_text));
-                            mDettaglioCallbacks.onStateChanged();
                         }
                         else
                         {
                             esitoDialog.setMessage(getResources().getString(R.string.dialog_ko_text));
-                            mDettaglioCallbacks.onStateChanged();
                         }
                     }
                     else
@@ -321,7 +318,7 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-                SDCard.refreshFileSystem(getActivity());
+//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_VISO_REQUEST);
             }
@@ -341,7 +338,7 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-                SDCard.refreshFileSystem(getActivity());
+//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_DOCUMENTO_FRONTE_REQUEST);
             }
@@ -361,7 +358,7 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-                SDCard.refreshFileSystem(getActivity());
+//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_DOCUMENTO_RETRO_REQUEST);
             }
@@ -381,7 +378,7 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-                SDCard.refreshFileSystem(getActivity());
+//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_MODULO_FRONTE_REQUEST);
             }
@@ -401,7 +398,7 @@ public class ClienteDetailFragment extends Fragment
                 if (!imagesFolder.exists())
                     imagesFolder.mkdirs();
                 
-                SDCard.refreshFileSystem(getActivity());
+//                SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_MODULO_RETRO_REQUEST);
             }
@@ -656,7 +653,7 @@ public class ClienteDetailFragment extends Fragment
             if (!dir.exists())
             {
                 dir.mkdirs();
-                SDCard.refreshFileSystem(getActivity());
+//                SDCard.refreshFileSystem(getActivity());
             }
             
             FileOutputStream out = new FileOutputStream(imagePathName);
