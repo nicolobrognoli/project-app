@@ -3,7 +3,6 @@ package com.lynxspa.trenitaliaapp.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -148,7 +147,7 @@ public class SDCard
             e.printStackTrace();
             return FAIL;
         }
-        refreshFileSystem(activity);
+//        refreshFileSystem(activity);
         return SUCCESS;
     }
     
@@ -178,12 +177,7 @@ public class SDCard
             return null;
         }
         
-        File[] list = dir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name)
-            {
-                return !name.startsWith(".");
-            }
-        });
+        File[] list = dir.listFiles();
         if (list.length == 0)
         {
             Log.v(TAG, "APP dir is empty!");
@@ -305,8 +299,7 @@ public class SDCard
         String destPath = Environment.getExternalStorageDirectory().getAbsolutePath().toString() + "/" + APPFOLDER + "/" + number;
         
         File visoTempImg = new File(srcPath + TEMP_IMG_VISO);
-        File visoDestImg = new File(destPath + IMG_VISO);
-        
+        File visoDestImg = new File(destPath + IMG_VISO);        
         boolean visoCopyOk = SDCard.copy(visoTempImg, visoDestImg);
         
         File documentoFronteTempImg = new File(srcPath + TEMP_IMG_DOCUMENTO_FRONTE);
@@ -628,7 +621,7 @@ public class SDCard
     
     public static void refreshFileSystem(Activity activity)
     {
-        Uri uri = Uri.parse("file://" + Environment.getExternalStorageDirectory());
+        Uri uri = Uri.parse("file://" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + APPFOLDER);
         Intent intent = new Intent(Intent.ACTION_MEDIA_MOUNTED, uri);
         activity.sendBroadcast(intent);
     }
