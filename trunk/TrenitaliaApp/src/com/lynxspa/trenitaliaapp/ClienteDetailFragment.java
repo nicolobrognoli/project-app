@@ -318,7 +318,8 @@ public class ClienteDetailFragment extends Fragment
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
-                imagesFolder.mkdirs();
+                if (!imagesFolder.exists())
+                    imagesFolder.mkdirs();
                 
                 SDCard.refreshFileSystem(getActivity());
                 
@@ -337,7 +338,8 @@ public class ClienteDetailFragment extends Fragment
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
-                imagesFolder.mkdirs();
+                if (!imagesFolder.exists())
+                    imagesFolder.mkdirs();
                 
                 SDCard.refreshFileSystem(getActivity());
                 
@@ -356,14 +358,15 @@ public class ClienteDetailFragment extends Fragment
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
-                imagesFolder.mkdirs();
+                if (!imagesFolder.exists())
+                    imagesFolder.mkdirs();
                 
                 SDCard.refreshFileSystem(getActivity());
                 
                 startDialog(FOTO_DOCUMENTO_RETRO_REQUEST);
             }
         });
-               
+        
         fotoModuloFronteButton_ = ((Button) rootView.findViewById(R.id.button_foto_modulo_fronte));
         fotoModuloFronteButton_.setOnClickListener(new OnClickListener() {
             
@@ -375,7 +378,8 @@ public class ClienteDetailFragment extends Fragment
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
-                imagesFolder.mkdirs();
+                if (!imagesFolder.exists())
+                    imagesFolder.mkdirs();
                 
                 SDCard.refreshFileSystem(getActivity());
                 
@@ -394,7 +398,8 @@ public class ClienteDetailFragment extends Fragment
                 // Creating folders for Image
                 String imageFolderPath = root + SDCard.TEMP_IMG_PATH;
                 File imagesFolder = new File(imageFolderPath);
-                imagesFolder.mkdirs();
+                if (!imagesFolder.exists())
+                    imagesFolder.mkdirs();
                 
                 SDCard.refreshFileSystem(getActivity());
                 
@@ -444,7 +449,7 @@ public class ClienteDetailFragment extends Fragment
             
             dialogAttesa_ = ProgressDialog.show(getActivity(), null, "Caricamento", true);
             loadingDocumentoFronte_ = loadingDocumentoRetro_ = loadingModuloFronte_ = loadingModuloRetro_ = loadingViso_ = true;
-            new LoadImagePreviewFromGallery().execute(VISO_BITMAP);            
+            new LoadImagePreviewFromGallery().execute(VISO_BITMAP);
             new LoadImagePreviewFromGallery().execute(DOCUMENTO_FRONTE_BITMAP);
             new LoadImagePreviewFromGallery().execute(DOCUMENTO_RETRO_BITMAP);
             new LoadImagePreviewFromGallery().execute(MODULO_FRONTE_BITMAP);
@@ -541,7 +546,7 @@ public class ClienteDetailFragment extends Fragment
             setThumbImageView(imageView, bitmapViso_);
             imageView.setVisibility(View.VISIBLE);
             fotoVisoAcquisita_ = true;
-        }        
+        }
         else if (imageType == DOCUMENTO_FRONTE_BITMAP && bitmapDocumentoFronte_ != null)
         {
             ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageview_foto_documento_fronte);
@@ -637,14 +642,14 @@ public class ClienteDetailFragment extends Fragment
     
     private void saveTempImage(String tempPath, String imagePathName, Bitmap bitmap, boolean isSalvataggioViso)
     {
-//        if (isSalvataggioViso)
-//        {
-//            fotoVisoAcquisita_ = false;
-//        }
-//        else
-//        {
-//            fotoDocumentoFronteAcquisita_ = false;
-//        }
+        // if (isSalvataggioViso)
+        // {
+        // fotoVisoAcquisita_ = false;
+        // }
+        // else
+        // {
+        // fotoDocumentoFronteAcquisita_ = false;
+        // }
         try
         {
             File dir = new File(tempPath);
@@ -658,14 +663,14 @@ public class ClienteDetailFragment extends Fragment
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.close();
             Log.v("Salvataggio immagine:", "Saved: " + imagePathName);
-//            if (isSalvataggioViso)
-//            {
-//                fotoVisoAcquisita_ = true;
-//            }
-//            else
-//            {
-//                fotoDocumentoFronteAcquisita_ = true;
-//            }
+            // if (isSalvataggioViso)
+            // {
+            // fotoVisoAcquisita_ = true;
+            // }
+            // else
+            // {
+            // fotoDocumentoFronteAcquisita_ = true;
+            // }
         }
         catch (Exception e)
         {
@@ -985,7 +990,8 @@ public class ClienteDetailFragment extends Fragment
                     }
                     else if (imageType == MODULO_FRONTE_BITMAP)
                     {
-                        bitmapModuloFronte_ = bmpDrawable.getBitmap();;
+                        bitmapModuloFronte_ = bmpDrawable.getBitmap();
+                        ;
                     }
                     else if (imageType == MODULO_RETRO_BITMAP)
                     {
@@ -1082,7 +1088,7 @@ public class ClienteDetailFragment extends Fragment
                 imagePathName = root + SDCard.TEMP_IMG_PATH + SDCard.TEMP_IMG_MODULO_RETRO;
                 bitmap = bitmapModuloRetro_;
                 loadingModuloRetro_ = false;
-            }            
+            }
             
             saveTempImage(tempPath, imagePathName, bitmap, imageType == VISO_BITMAP);
             dismissDialogAttesa();
